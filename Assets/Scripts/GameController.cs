@@ -11,8 +11,8 @@ public class GameController : MonoBehaviour
     public Tile[,] FloorTiles;
     public Tile[,] WallTiles;
     public Action<Tile> CallbackTileChanged { get; set; }
-    private int Width;
-    private int Height;
+    private int size = 10;
+    private MapGenerator _map;
 
     void Awake()
     {
@@ -24,41 +24,15 @@ public class GameController : MonoBehaviour
         }
         Instance = this;
 
+        _map = new MapGenerator(10,0,0,0,0);
+        FloorTiles = _map.getFloors();
+        foreach (Tile floor in FloorTiles)
+        {
+            Debug.Log("Floor Here");
+        }
+        WallTiles = _map.getWalls();
+
         // Generate some test tiles
-        GenerateTestTiles(10, 10);
-    }
-
-    void GenerateTestTiles(int width, int height)
-    {
-        Width = width;
-        Height = height;
-        // Generate some floor tiles
-        FloorTiles = new Tile[width, height];
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                Tile t = new Tile(x, y);
-                t.Type = TileType.Floor;
-                t.CallbackTileChanged += OnTileChanged;
-                FloorTiles[x, y] = t;
-            }
-        }
-
-        // Generate some wall tiles
-        WallTiles = new Tile[width, height];
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                Tile t = new Tile(x, y);
-                // Tile is only wall 50% of the time
-                if (Random.value > 0.5f)
-                    t.Type = TileType.Wall;
-                t.CallbackTileChanged += OnTileChanged;
-                WallTiles[x, y] = t;
-            }
-        }
     }
 
     void Update()
@@ -68,7 +42,7 @@ public class GameController : MonoBehaviour
 
     public Tile GetTileAt(int x, int y)
     {
-        if (x >= Width || x < 0 || y >= Height || y < 0)
+        if (x >= size || x < 0 || y >= size || y < 0)
             return null;
 
         return FloorTiles[x, y];
@@ -76,7 +50,7 @@ public class GameController : MonoBehaviour
 
     public Tile GetWallTileAt(int x, int y)
     {
-        if (x >= Width || x < 0 || y >= Height || y < 0)
+        if (x >= size || x < 0 || y >= size || y < 0)
             return null;
 
         return WallTiles[x, y];
@@ -92,7 +66,7 @@ public class GameController : MonoBehaviour
         return GetTileAt(position.x, position.y);
     }
 
-    void OnTileChanged(Tile tile)
+    public void OnTileChanged(Tile tile)
     {
         if (CallbackTileChanged != null)
             CallbackTileChanged(tile);
