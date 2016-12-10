@@ -28,7 +28,7 @@ public class MapGenerator {
 
     private void _generateTiles(int size)
     {
-        // Generate some floor tiles
+        // Generate floor tiles
         _floorTiles = new Tile[size, size];
         for (int x = 0; x < size; x++)
         {
@@ -41,16 +41,14 @@ public class MapGenerator {
             }
         }
 
-        // Generate some wall tiles
+        // Generate the wall tiles
         _wallTiles = new Tile[size, size];
-        for (int x = 0; x < size; x++)
+        for (int x = 0; x < (size); x++)
         {
-            for (int y = 0; y < size; y++)
+            for (int y = 0; y < (size); y++)
             {
                 Tile t = new Tile(x, y);
-                // Tile is only wall 50% of the time
-                if (Random.value > 0.5f)
-                    t.Type = TileType.Wall;
+                t.Type = TileType.Wall;
                 t.CallbackTileChanged += GameController.Instance.OnTileChanged;
                 _wallTiles[x, y] = t;
             }
