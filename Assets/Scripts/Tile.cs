@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TileType
+{
+    Empty,
+    Wall,
+    Floor
+}
+
 public class Tile
 {
-
-    public enum TileType
-    {
-        Wall,
-        Floor
-    }
-
     private TileType _type;
     public TileType Type
     {
@@ -29,8 +29,8 @@ public class Tile
         }
     }
 
-    public int X { get; private set; }
-    public int Y { get; private set; }
+    public int X { get; }
+    public int Y { get; }
 
     public Vector2 Position
     {
@@ -40,15 +40,17 @@ public class Tile
     // Callbacks
     public Action<Tile> CallbackTileChanged { get; set; }
 
+    // Constructor
     public Tile(int x, int y)
     {
         X = x;
         Y = y;
+        _type = TileType.Empty;
     }
 
     public bool IsNeighbour(Tile tile, bool includeCornerTiles = false)
     {
         return Math.Abs(tile.X - X) + Math.Abs(tile.Y - Y) == 1 ||
-                (includeCornerTiles && Math.Abs(tile.X - X) == 1 && Math.Abs(tile.Y - Y) == 1);
+               includeCornerTiles && Math.Abs(tile.X - X) == 1 && Math.Abs(tile.Y - Y) == 1;
     }
 }

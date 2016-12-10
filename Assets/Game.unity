@@ -245,7 +245,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75089235c1da76440b218e47cd982148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _floorSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  ModsDirectory: Texture Packs
+  TilesetFilename: tileset_template.png
+  TilesetSize: {x: 224, y: 224}
+  TileSize: {x: 32, y: 32}
 --- !u!4 &1849217892
 Transform:
   m_ObjectHideFlags: 0
