@@ -18,7 +18,7 @@ public class TileSpriteController : MonoBehaviour {
     {
         // Instantiate the floor tile GameObjects
         GeneratedTiles = new Dictionary<Tile, GameObject>();
-        foreach (Tile tile in GameController.Instance.Tiles)
+        foreach (Tile tile in GameController.Instance.FloorTiles)
         {
             GameObject go = new GameObject("TILE [" + tile.X + ", " + tile.Y + "]");
             go.transform.SetParent(transform);
