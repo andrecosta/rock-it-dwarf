@@ -118,6 +118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99c1c73c49d425c41961a85136bbbffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapSize: 10
+  mapTunnelAmmount: 3
+  mapRoomAmmount: 2
+  mapEmptyArea: 30
+  mapRandomness: 0.3
 --- !u!4 &246236897
 Transform:
   m_ObjectHideFlags: 0
@@ -245,10 +250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75089235c1da76440b218e47cd982148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModsDirectory: Texture Packs
-  TilesetFilename: tileset_template.png
+  TilesetName: BrownFiesta
   TilesetSize: {x: 224, y: 224}
-  TileSize: {x: 32, y: 32}
 --- !u!4 &1849217892
 Transform:
   m_ObjectHideFlags: 0
