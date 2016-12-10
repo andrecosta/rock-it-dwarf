@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class TileSpriteController : MonoBehaviour
 {
+    public string TilesetName;
     public Vector2 TilesetSize = new Vector2(224, 224);
 
     public Dictionary<Tile, GameObject> GeneratedTiles { get; private set; }
@@ -92,7 +93,7 @@ public class TileSpriteController : MonoBehaviour
     {
         _wallSprites = new Dictionary<string, Sprite>();
 
-        Texture2D tileset = Resources.Load<Texture2D>("Textures/Tilesets/tileset_template");
+        Texture2D tileset = Resources.Load<Texture2D>("Textures/Tilesets/" + TilesetName);
         for (int y = (int)TilesetSize.y - 32, i = 0; y >= 0; y -= 32)
         {
             for (int x = 0; x < (int)TilesetSize.x; x += 32)
