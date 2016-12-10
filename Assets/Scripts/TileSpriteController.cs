@@ -98,7 +98,7 @@ public class TileSpriteController : MonoBehaviour
         {
             for (int x = 0; x < (int)TilesetSize.x; x += 32)
             {
-                var s = Sprite.Create(tileset, new Rect(x, y, 32, 32), Vector2.zero, 32);
+                var s = Sprite.Create(tileset, new Rect(x, y, 32, 32), new Vector2(0.5f, 0.5f), 32);
                 if (!_wallSprites.ContainsKey(_indexes[i].ToString()))
                     _wallSprites.Add(_indexes[i].ToString(), s);
                 i++;
