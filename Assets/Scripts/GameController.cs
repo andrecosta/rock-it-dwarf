@@ -8,10 +8,14 @@ public class GameController : MonoBehaviour
 {
     // Singleton
     public static GameController Instance { get; private set; }
+
+    //Map Generation Variables
+    public int mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea;
+    public float mapRandomness;
     public Tile[,] FloorTiles;
     public Tile[,] WallTiles;
+
     public Action<Tile> CallbackTileChanged { get; set; }
-    private int size = 10;
     private MapGenerator _map;
 
     void Awake()
@@ -24,12 +28,8 @@ public class GameController : MonoBehaviour
         }
         Instance = this;
 
-        _map = new MapGenerator(10,0,0,0,0);
+        _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness);
         FloorTiles = _map.getFloors();
-        foreach (Tile floor in FloorTiles)
-        {
-            Debug.Log("Floor Here");
-        }
         WallTiles = _map.getWalls();
 
         // Generate some test tiles
@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour
 
     public Tile GetTileAt(int x, int y)
     {
-        if (x >= size || x < 0 || y >= size || y < 0)
+        if (x >= mapSize || x < 0 || y >= mapSize || y < 0)
             return null;
 
         return FloorTiles[x, y];
@@ -50,7 +50,7 @@ public class GameController : MonoBehaviour
 
     public Tile GetWallTileAt(int x, int y)
     {
-        if (x >= size || x < 0 || y >= size || y < 0)
+        if (x >= mapSize || x < 0 || y >= mapSize || y < 0)
             return null;
 
         return WallTiles[x, y];
