@@ -150,7 +150,7 @@ public class TileSpriteController : MonoBehaviour
         t = GameController.Instance.GetWallTileAt(tile.X - 1, tile.Y + 0); // Left
         if (t != null && t.Type == TileType.Wall)
             i |= BitField.W;
-
+        
         if ((i & BitField.HasNE) == BitField.HasNE)
         {
             t = GameController.Instance.GetWallTileAt(tile.X + 1, tile.Y + 1); // Top-right corner
@@ -175,10 +175,6 @@ public class TileSpriteController : MonoBehaviour
             if (t != null && t.Type == TileType.Wall)
                 i |= BitField.NW;
         }
-
-        // Loop around
-        if (i.GetHashCode() > 255)
-            i -= 256;
 
         string ii = i.GetHashCode().ToString();
 

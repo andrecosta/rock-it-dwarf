@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                Tile t = new Tile(x - width / 2, y - height / 2);
+                Tile t = new Tile(x, y);
                 t.Type = TileType.Floor;
                 t.CallbackTileChanged += OnTileChanged;
                 FloorTiles[x, y] = t;
@@ -51,7 +51,7 @@ public class GameController : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                Tile t = new Tile(x - width / 2, y - height / 2);
+                Tile t = new Tile(x, y);
                 // Tile is only wall 50% of the time
                 if (Random.value > 0.5f)
                     t.Type = TileType.Wall;
