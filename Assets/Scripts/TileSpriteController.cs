@@ -298,7 +298,7 @@ public class TileSpriteController : MonoBehaviour
                     y += dy2;
                 }
                 if (testTile.Type == TileType.Empty)
-                    occusionValue += 3;
+                    occusionValue += 5;
             }
 
             Vector2 vectorFromPlayer = shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y);
@@ -318,7 +318,7 @@ public class TileSpriteController : MonoBehaviour
             else
                 intensity = 1;
 
-            shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, intensity, Time.deltaTime * 2);
+            shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, intensity, Time.deltaTime * 4);
             //shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, 0, Time.deltaTime * 2);
         }
     }
