@@ -45,7 +45,7 @@ public class TileSpriteController : MonoBehaviour
     void Awake()
     {
         // Load floor tile sprite
-        _floorSprite = Resources.Load<Sprite>("Sprites/FloorTile");
+        _floorSprite = Resources.Load<Sprite>("Sprites/Square");
 
         // Load wall sprites from tileset
         LoadWallsTileset();
@@ -63,6 +63,7 @@ public class TileSpriteController : MonoBehaviour
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sortingLayerName = "Floor";
             sr.sprite = _floorSprite;
+            sr.color = new Color32(41, 26, 14, 255);
 
             // Register callbacks
             //tile.CallbackTileChanged += OnTileChanged;
