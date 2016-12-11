@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject Rocket;
+
     private Tile _currentTile;
     private Tile _targetTile;
     private float _moveTimer;
@@ -26,7 +28,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Movement();
-        DigAction();
+
+        if (Input.GetKey(KeyCode.Space))
+            Dig();
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+            Shoot();
     }
 
     void LateUpdate()
@@ -60,16 +67,21 @@ public class PlayerController : MonoBehaviour
             _targetTile = tile;
     }
 
-    void DigAction()
+    void Dig()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            if (_currentTile != _targetTile)
-                return;
+        if (_currentTile != _targetTile)
+            return;
 
-            Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
-            if (tile != null && tile.Type == TileType.Empty)
-                GameController.Instance.GetWallTileAt(tile.X, tile.Y).Type = TileType.Wall;
-        }
+        Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
+        if (tile != null && tile.Type == TileType.Empty)
+            GameController.Instance.GetWallTileAt(tile.X, tile.Y).Type = TileType.Wall;
+    }
+
+    void Shoot()
+    {
+        if (_currentTile != _targetTile)
+            return;
+
+        Instantiate(Rocket, transform.position, Quaternion.LookRotation(transform.forward, _orientation));
     }
 }
