@@ -65,7 +65,7 @@ public class TileSpriteController : MonoBehaviour
             sr.sprite = _floorSprite;
 
             // Register callbacks
-            //tile.CallbackTileTypeChanged += OnTileTypeChanged;
+            //tile.CallbackTileChanged += OnTileChanged;
 
             GeneratedTiles.Add(tile, go);
         }
@@ -80,7 +80,7 @@ public class TileSpriteController : MonoBehaviour
                 sr.sprite = GetSpriteFromTileset(tile);
 
             // Register callbacks
-            //tile.CallbackTileTypeChanged += OnTileTypeChanged;
+            //tile.CallbackTileChanged += OnTileChanged;
 
             GeneratedTiles.Add(tile, go);
         }
@@ -126,10 +126,38 @@ public class TileSpriteController : MonoBehaviour
             case TileType.Floor:
                 sr.sprite = _floorSprite;
                 break;
+            case TileType.Wall:
+                sr.sprite = GetSpriteFromTileset(tile);
+                break;
             default:
                 sr.sprite = null;
                 break;
         }
+
+        Tile neighbor = GameController.Instance.GetWallTileAt(tile.X + 1, tile.Y);
+        if (neighbor != null && neighbor.Type == TileType.Wall)
+            GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor);
+        neighbor = GameController.Instance.GetWallTileAt(tile.X - 1, tile.Y);
+        if (neighbor != null && neighbor.Type == TileType.Wall)
+            GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor);
+        neighbor = GameController.Instance.GetWallTileAt(tile.X, tile.Y + 1);
+        if (neighbor != null && neighbor.Type == TileType.Wall)
+            GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor);
+        neighbor = GameController.Instance.GetWallTileAt(tile.X, tile.Y - 1);
+        if (neighbor != null && neighbor.Type == TileType.Wall)
+            GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor);
+        neighbor = GameController.Instance.GetWallTileAt(tile.X + 1, tile.Y + 1);
+        if (neighbor != null && neighbor.Type == TileType.Wall)
+            GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor);
+        neighbor = GameController.Instance.GetWallTileAt(tile.X - 1, tile.Y - 1);
+        if (neighbor != null && neighbor.Type == TileType.Wall)
+            GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor);
+        neighbor = GameController.Instance.GetWallTileAt(tile.X + 1, tile.Y - 1);
+        if (neighbor != null && neighbor.Type == TileType.Wall)
+            GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor);
+        neighbor = GameController.Instance.GetWallTileAt(tile.X - 1, tile.Y + 1);
+        if (neighbor != null && neighbor.Type == TileType.Wall)
+            GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor);
     }
 
     public Sprite GetSpriteFromTileset(Tile tile)
