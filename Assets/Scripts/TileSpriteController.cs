@@ -109,16 +109,7 @@ public class TileSpriteController : MonoBehaviour
 
     void Update()
     {
-        foreach (var shadow in GeneratedShadows)
-        {
-            float distanceToPlayer = Vector3.SqrMagnitude(shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y));
-
-            if (distanceToPlayer <= 25)
-            {
-                float intensity = Mathf.InverseLerp(0, 25, distanceToPlayer);
-                shadow.Value.color = Color.black * intensity;
-            }
-        }
+        calculateShadows();
     }
 
     void LoadWallsTileset()
@@ -246,5 +237,27 @@ public class TileSpriteController : MonoBehaviour
         }
 
         return _wallSprites[ii];
+    }
+
+    void calculateShadows()
+    {
+        foreach (var shadow in GeneratedShadows)
+        {
+            Vector2 vectorFromPlayer = shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y);
+            float distanceToPlayer = Vector3.SqrMagnitude(vectorFromPlayer);
+
+            float multiplier = (0.7f - (Vector2.Dot(vectorFromPlayer.normalized, _player.getOrientation().normalized) * 0.5f));
+            float shadowValue = distanceToPlayer * multiplier;
+
+            if (shadowValue <= 100)
+            {
+                float intensity;
+                if (distanceToPlayer < 2)
+                    intensity = 0;
+                else 
+                    intensity = Mathf.InverseLerp(0, 10, shadowValue);
+                shadow.Value.color = Color.black * intensity;
+            }
+        }
     }
 }
