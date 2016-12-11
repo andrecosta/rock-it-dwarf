@@ -53,9 +53,9 @@ public class MapGenerator {
 
                 // Check start area
                 if ((x < 2 && y < 2) || (x < 2 && y > (size - 3)) || (x > (size - 3) && y < 2) || (x > (size - 3) && y > (size - 3)))
-                    t.Type = TileType.Empty;
-                else
                     t.Type = TileType.Wall;
+                else
+                    t.Type = TileType.Empty;
 
                 t.CallbackTileChanged += GameController.Instance.OnTileChanged;
                 _wallTiles[x, y] = t;
@@ -109,7 +109,7 @@ public class MapGenerator {
 
             //Getting the starting tile
             Tile startTile = _getTile();
-            startTile.Type = TileType.Empty;
+            startTile.Type = TileType.Wall;
             Tile currTile = startTile;
             currArea++;
             //Getting random direction
@@ -124,7 +124,7 @@ public class MapGenerator {
                     tileTrials = 0;
                     firstTrials = 0;
                     currTile = _wallTiles[tileX, tileY];
-                    currTile.Type = TileType.Empty;
+                    currTile.Type = TileType.Wall;
                     corridorSize++;
                     currArea++;
 
@@ -188,7 +188,7 @@ public class MapGenerator {
         Tile newTile;
         newTile = _getTile();
         //Setting to empty
-        newTile.Type = TileType.Empty; 
+        newTile.Type = TileType.Wall; 
         currArea += 1;
     }
 
@@ -209,7 +209,7 @@ public class MapGenerator {
                 continue;
 
             //Checking if the tile is already empty
-            if (_wallTiles[x, y].Type == TileType.Empty)
+            if (_wallTiles[x, y].Type == TileType.Wall)
                 continue;
 
             currTile = _wallTiles[x, y];
@@ -248,7 +248,7 @@ public class MapGenerator {
         if ((x < 3 && y < 3) || (x < 3 && y > (_mapSize - 4)) || (x > (_mapSize - 4) && y < 3) || (x > (_mapSize - 4) && y > (_mapSize - 4)))
             return false;
 
-        if (_wallTiles[x, y].Type == TileType.Empty)
+        if (_wallTiles[x, y].Type == TileType.Wall)
             return false;
 
         return true;
