@@ -283,6 +283,7 @@ public class TileSpriteController : MonoBehaviour
 
             for (int i = 0; i <= longest; i++)
             {
+                
                 testTile = GameController.Instance.GetWallTileAt(x, y);
                 numerator += shortest;
                 if (!(numerator < longest))
@@ -297,7 +298,7 @@ public class TileSpriteController : MonoBehaviour
                     y += dy2;
                 }
                 if (testTile.Type == TileType.Empty)
-                    occusionValue += 2;
+                    occusionValue += 1;
             }
 
             Vector2 vectorFromPlayer = shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y);
@@ -306,13 +307,13 @@ public class TileSpriteController : MonoBehaviour
             float multiplier = 0.63f - (Vector2.Dot(vectorFromPlayer.normalized, _player.getOrientation().normalized) * 0.5f);
             float shadowValue = distanceToPlayer * multiplier;
 
-            if (shadowValue < 5)
+            if (shadowValue < 8)
             {
                 shadowValue += occusionValue;
                 if (distanceToPlayer < 2)
                     intensity = 0;
                 else
-                    intensity = Mathf.InverseLerp(0, 5, shadowValue);
+                    intensity = Mathf.InverseLerp(0, 8, shadowValue);
             }
             else
                 intensity = 1;
