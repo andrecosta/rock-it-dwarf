@@ -6,15 +6,18 @@ using UnityEngine;
 public class MapGenerator {
 
     //Private Variables
-    private int _mapSize, _tunnelAmmount, _roomAmmount;
+    private int _mapSize, _tunnelAmmount, _roomAmmount, _enemyAmmount;
     private float _mapRandomness, _emptyArea;
     private Tile[,] _floorTiles;
     private Tile[,] _wallTiles;
+    private List<Tile> _emptyTiles;
+    private GameObject _enemyPrefab;
    
 
     public MapGenerator(int size, int tunels, int rooms, float area, float random)
     {
         _mapSize = size;
+        _emptyTiles = new List<Tile>();
         _tunnelAmmount = tunels;
         _roomAmmount = rooms;
         _emptyArea = area;
@@ -22,6 +25,7 @@ public class MapGenerator {
 
         _generateTiles(_mapSize);
         _generateSpace();
+        
 
     }
 
@@ -124,6 +128,7 @@ public class MapGenerator {
             //Getting the starting tile
             Tile startTile = _getTile();
             startTile.Type = TileType.Wall;
+            _emptyTiles.Add(startTile);
             Tile currTile = startTile;
             currArea++;
             //Getting random direction
@@ -139,6 +144,7 @@ public class MapGenerator {
                     firstTrials = 0;
                     currTile = _wallTiles[tileX, tileY];
                     currTile.Type = TileType.Wall;
+                    _emptyTiles.Add(currTile);
                     corridorSize++;
                     currArea++;
 
@@ -204,6 +210,8 @@ public class MapGenerator {
                         roomSize++;
                         currArea++;
                         _wallTiles[i + startX, j + startY].Type = TileType.Wall;
+                        Tile currTile = _wallTiles[i + startX, j + startY];
+                        _emptyTiles.Add(currTile);
                     }
                 }
             }
@@ -219,7 +227,8 @@ public class MapGenerator {
         newTile = _getTile();
         //Debug.Log("CurrArea: " + currArea + " Target: " + _emptyArea * _mapSize * _mapSize);
         //Setting to empty
-        newTile.Type = TileType.Wall; 
+        newTile.Type = TileType.Wall;
+        _emptyTiles.Add(newTile);
         currArea += 1;
     }
 
@@ -283,5 +292,10 @@ public class MapGenerator {
             return false;
 
         return true;
+    }
+
+    public List<Tile> getEmptyTiles()
+    {
+        return _emptyTiles;
     }
 }
