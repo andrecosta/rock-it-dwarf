@@ -246,18 +246,28 @@ public class TileSpriteController : MonoBehaviour
             Vector2 vectorFromPlayer = shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y);
             float distanceToPlayer = Vector3.SqrMagnitude(vectorFromPlayer);
 
-            float multiplier = (0.7f - (Vector2.Dot(vectorFromPlayer.normalized, _player.getOrientation().normalized) * 0.5f));
+            float multiplier = 0.63f - (Vector2.Dot(vectorFromPlayer.normalized, _player.getOrientation().normalized) * 0.5f);
             float shadowValue = distanceToPlayer * multiplier;
 
-            if (shadowValue <= 100)
+            if (shadowValue <= 5)
             {
                 float intensity;
                 if (distanceToPlayer < 2)
                     intensity = 0;
-                else 
-                    intensity = Mathf.InverseLerp(0, 10, shadowValue);
-                shadow.Value.color = Color.black * intensity;
+                else
+                    intensity = Mathf.InverseLerp(0, 5, shadowValue);
+                shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, intensity, Time.deltaTime * 2);
+            }
+
+            else
+            {
+                shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, 1, Time.deltaTime * 2);
             }
         }
+    }
+
+    private void _occlusion(int tileX, int tileY, int playerX, int playerY)
+    {
+
     }
 }
