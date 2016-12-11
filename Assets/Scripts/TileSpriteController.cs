@@ -298,13 +298,13 @@ public class TileSpriteController : MonoBehaviour
                     y += dy2;
                 }
                 if (testTile.Type == TileType.Empty)
-                    occusionValue += 2;
+                    occusionValue += 3;
             }
 
             Vector2 vectorFromPlayer = shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y);
             float distanceToPlayer = Vector3.SqrMagnitude(vectorFromPlayer);
 
-            float multiplier = 0.63f - (Vector2.Dot(vectorFromPlayer.normalized, _player.getOrientation().normalized) * 0.5f);
+            float multiplier = 0.53f - (Vector2.Dot(vectorFromPlayer.normalized, _player.getOrientation().normalized) * 0.5f);
             float shadowValue = distanceToPlayer * multiplier;
 
             if (shadowValue < 8)
