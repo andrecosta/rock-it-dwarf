@@ -119,10 +119,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapSize: 40
-  mapTunnelAmmount: 3
+  mapTunnelAmmount: 5
   mapRoomAmmount: 2
-  mapRandomness: 0.3
-  mapEmptyArea: 0.2
+  mapRandomness: 0.2
+  mapEmptyArea: 0.1
 --- !u!4 &246236897
 Transform:
   m_ObjectHideFlags: 0
