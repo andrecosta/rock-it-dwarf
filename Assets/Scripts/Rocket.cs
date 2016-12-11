@@ -60,6 +60,7 @@ public class Rocket : MonoBehaviour
     {
         _ps.Stop();
         _sr.enabled = false;
+        Camera.main.GetComponent<CameraShake>().ShakeCamera(0.5f, 1);
 
         while (_ps.isPlaying)
             yield return null;
