@@ -298,7 +298,7 @@ public class TileSpriteController : MonoBehaviour
                     y += dy2;
                 }
                 if (testTile.Type == TileType.Empty)
-                    occusionValue += 1;
+                    occusionValue += 2;
             }
 
             Vector2 vectorFromPlayer = shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y);
@@ -310,9 +310,9 @@ public class TileSpriteController : MonoBehaviour
             if (shadowValue < 8)
             {
                 shadowValue += occusionValue;
-                if (distanceToPlayer < 2)
+                /*if (distanceToPlayer < 2)
                     intensity = 0;
-                else
+                else */
                     intensity = Mathf.InverseLerp(0, 8, shadowValue);
             }
             else
