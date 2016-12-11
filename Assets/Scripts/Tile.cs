@@ -37,6 +37,8 @@ public class Tile
         get { return new Vector2(X, Y); }
     }
 
+    public float ShadowIntensity { get; set; }
+
     // Callbacks
     public Action<Tile> CallbackTileChanged { get; set; }
 
@@ -46,6 +48,7 @@ public class Tile
         X = x;
         Y = y;
         _type = TileType.Empty;
+        ShadowIntensity = 1;
     }
 
     public bool IsNeighbour(Tile tile, bool includeCornerTiles = false)

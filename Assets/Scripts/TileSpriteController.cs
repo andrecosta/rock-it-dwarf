@@ -10,8 +10,12 @@ public class TileSpriteController : MonoBehaviour
     public Vector2 TilesetSize = new Vector2(224, 224);
 
     public Dictionary<Tile, GameObject> GeneratedTiles { get; private set; }
+    public Dictionary<Tile, SpriteRenderer> GeneratedShadows { get; private set; }
+
+    private PlayerController _player;
 
     private Sprite _floorSprite;
+    private Sprite _shadowSprite;
     private Dictionary<string, Sprite> _wallSprites;
 
     private int[] _indexes =
@@ -46,6 +50,7 @@ public class TileSpriteController : MonoBehaviour
     {
         // Load floor tile sprite
         _floorSprite = Resources.Load<Sprite>("Sprites/Square");
+        _shadowSprite = Resources.Load<Sprite>("Sprites/Shadow");
 
         // Load wall sprites from tileset
         LoadWallsTileset();
@@ -55,6 +60,7 @@ public class TileSpriteController : MonoBehaviour
     {
         // Instantiate the floor tile GameObjects
         GeneratedTiles = new Dictionary<Tile, GameObject>();
+        GeneratedShadows = new Dictionary<Tile, SpriteRenderer>();
         foreach (Tile tile in GameController.Instance.FloorTiles)
         {
             GameObject go = new GameObject("TILE FLOOR [" + tile.X + ", " + tile.Y + "]");
@@ -84,10 +90,35 @@ public class TileSpriteController : MonoBehaviour
             //tile.CallbackTileChanged += OnTileChanged;
 
             GeneratedTiles.Add(tile, go);
+
+            // Generate shadow tile
+            GameObject shadowGo = new GameObject("LIGHT [" + tile.X + ", " + tile.Y + "]");
+            shadowGo.transform.localPosition = tile.Position;
+            sr = shadowGo.AddComponent<SpriteRenderer>();
+            sr.sortingLayerName = "LOS";
+            sr.sprite = _floorSprite;
+            sr.color = Color.black * tile.ShadowIntensity;
+            GeneratedShadows.Add(tile, sr);
         }
 
         // Map callback
         GameController.Instance.CallbackTileChanged += OnTileChanged;
+
+        _player = FindObjectOfType<PlayerController>();
+    }
+
+    void Update()
+    {
+        foreach (var shadow in GeneratedShadows)
+        {
+            float distanceToPlayer = Vector3.SqrMagnitude(shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y));
+
+            if (distanceToPlayer <= 25)
+            {
+                float intensity = Mathf.InverseLerp(0, 25, distanceToPlayer);
+                shadow.Value.color = Color.black * intensity;
+            }
+        }
     }
 
     void LoadWallsTileset()

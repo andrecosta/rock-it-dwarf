@@ -31,8 +31,6 @@ public class GameController : MonoBehaviour
         _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness);
         FloorTiles = _map.getFloors();
         WallTiles = _map.getWalls();
-
-        // Generate some test tiles
     }
 
     void Update()
@@ -64,11 +62,6 @@ public class GameController : MonoBehaviour
     public Tile GetWallTileAt(float x, float y)
     {
         return GetWallTileAt((int) Mathf.Round(x), (int) Math.Round(y));
-    }
-
-    public Tile GetTileAt(Vector2 position)
-    {
-        return GetTileAt(position.x, position.y);
     }
 
     public void OnTileChanged(Tile tile)

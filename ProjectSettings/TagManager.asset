@@ -50,3 +50,6 @@ TagManager:
   - name: Characters
     uniqueID: 1218156061
     locked: 0
+  - name: LOS
+    uniqueID: 4026358329
+    locked: 0
