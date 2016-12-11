@@ -68,26 +68,40 @@ public class MapGenerator {
         int currArea = 0;
         int roomAmmount = 0;
         int corridorAmmount = 0;
+        int averageRoomSize;
+        int averageTunnelSize;
 
         // Getting the Aproximate ocupation size of tunnels
         float tunnelArea = (_emptyArea * _mapSize * _mapSize) / 4;
         if (_roomAmmount == 0)
             tunnelArea *= 3;
+
+
         // Getting the Average tunnel area
-        int averageTunnelSize = (int) tunnelArea / _tunnelAmmount;
+        if (_tunnelAmmount > 0)
+            averageTunnelSize = (int)tunnelArea / _tunnelAmmount;
+        else
+            averageTunnelSize = 0;
 
         // Getting the Aproximate ocupation size of rooms
         float roomArea = (_emptyArea * _mapSize * _mapSize * 2) / 4;
         if (_tunnelAmmount == 0)
             roomArea *= (3/2);
-        // Getting the Average room area
-        int averageRoomSize = (int)tunnelArea / _roomAmmount;
 
-        //(currArea < (int)(_emptyArea * _mapSize * _mapSize)) || 
-        while ((roomAmmount < _roomAmmount) || (corridorAmmount < _tunnelAmmount))
+
+        // Getting the Average room area
+        if (_roomAmmount > 0)
+            averageRoomSize = (int)tunnelArea / _roomAmmount;
+        else
+            averageRoomSize = 0;
+
+
+        //(currArea < (int)(_emptyArea * _mapSize * _mapSize)) ||
+        //(roomAmmount < _roomAmmount) || 
+        while ((corridorAmmount < _tunnelAmmount))
         {
             _insertTunnels(ref corridorAmmount, ref currArea, averageTunnelSize);
-            _insertRooms(ref roomAmmount, ref currArea, averageRoomSize);
+            //_insertRooms(ref roomAmmount, ref currArea, averageRoomSize);
             _insertRandom(ref currArea);
         }
     }
@@ -104,8 +118,8 @@ public class MapGenerator {
             int corridorSize = 1;
             int tileTrials = 0;
             int firstTrials = 0;
-
             bool completed = false;
+            int targetTunnelSize = averageTunnelSize + (int)((Random.Range(-1f, 1f) * averageTunnelSize) / 2);
 
             //Getting the starting tile
             Tile startTile = _getTile();
@@ -135,19 +149,7 @@ public class MapGenerator {
                     }
 
                     // If too small, continue
-                    if (corridorSize <=  averageTunnelSize / 2)
-                        continue;
-
-                    int toAverage = Mathf.Abs(corridorSize - averageTunnelSize) + 1;
-                    int chance = 1;
-
-                    while (toAverage > 0)
-                    {
-                        chance *= Random.Range(0, 1);
-                        toAverage--;
-                    }
-
-                    if (chance == 1 || corridorSize >= (3 * averageTunnelSize) / 2)
+                    if (corridorSize >=  targetTunnelSize)
                         completed = true;
                 }
                 else
@@ -178,7 +180,32 @@ public class MapGenerator {
         if (roomAmmount == _roomAmmount)
             return;
 
-        roomAmmount = _roomAmmount;
+
+        while (roomAmmount < _roomAmmount)
+        {
+            int roomSize = 1;
+            int tileTrials = 0;
+            int firstTrials = 0;
+            int targetRoomSize = averageRoomSize + (int)((Random.Range(-1f, 1f) * averageRoomSize) / 2);
+
+            int roomWidth = (int)(Mathf.Sqrt(targetRoomSize) + Random.Range(-1, 1) + 0.5f);
+            int roomHeight = (int)(Mathf.Sqrt(targetRoomSize) + Random.Range(-1, 1) + 0.5f);
+
+            bool completed = false;
+
+            //Getting the starting tile
+            Tile startTile = _getTile();
+            startTile.Type = TileType.Wall;
+            Tile currTile = startTile;
+            currArea++;
+            //Getting random direction
+            Vector2 direction = getNewDirection();
+
+            while (!completed)
+            {
+            }
+            roomAmmount++;
+        }
     }
 
     
