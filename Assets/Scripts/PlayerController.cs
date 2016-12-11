@@ -5,6 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameObject Rocket;
+    public Vector2 getOrientation()
+    {
+        return _orientation;
+    }
 
     private Tile _currentTile;
     private Tile _targetTile;
