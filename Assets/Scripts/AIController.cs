@@ -108,7 +108,8 @@ public class AIController : MonoBehaviour {
 
     private bool checkIfPlayer()
     {
-        return true;
+        //if (Vector3.SqrMagnitude(transform.position - _gameController))
+        return false;
     }
 
     private Vector2 getNewDirection()
