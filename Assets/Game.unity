@@ -121,6 +121,7 @@ MonoBehaviour:
   mapSize: 40
   mapTunnelAmmount: 10
   mapRoomAmmount: 1
+  enemyAmmount: 0
   mapRandomness: 0.2
   mapEmptyArea: 0.1
 --- !u!4 &246236897
