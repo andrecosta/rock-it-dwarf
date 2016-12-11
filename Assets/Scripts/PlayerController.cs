@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private float _animationTimer;
     private int _animationFrame;
     private SpriteRenderer _sr;
+    private float _digTimer;
+    private float _shootCooldown;
 
     void Start()
     {
@@ -42,10 +44,24 @@ public class PlayerController : MonoBehaviour
         Movement();
 
         if (Input.GetKey(KeyCode.Space))
-            Dig();
+        {
+            _digTimer -= Time.deltaTime;
+            if (_digTimer <= 0)
+            {
+                Dig();
+                _digTimer = 1;
+            }
+        }
+        else
+            _digTimer = 1;
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (_shootCooldown > 0)
+            _shootCooldown -= Time.deltaTime;
+        else if (Input.GetKey(KeyCode.LeftControl))
+        {
             Shoot();
+            _shootCooldown = 1;
+        }
 
         Animation();
     }
