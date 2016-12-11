@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour {
 
+    public float randomness = 0.2f;
+
     private Tile _currentTile;
     private Tile _targetTile;
     private float _moveTimer;
@@ -14,6 +16,7 @@ public class AIController : MonoBehaviour {
     private SpriteRenderer _sr;
     private float _lastHorizontalOrientation;
     private bool _deteced_player;
+    private float timerForAction = 0;
 
     public void setTile(Tile currTile) { _currentTile = currTile; }
 
@@ -22,12 +25,14 @@ public class AIController : MonoBehaviour {
         // Load animation
         _animations = Resources.LoadAll<Sprite>("Sprites/LittleDwarf");
         _sr = GetComponent<SpriteRenderer>();
+        _orientation = getNewDirection();
+        _targetTile = _currentTile;
     }
     // Update is called once per frame
     void Update () {
         Animation();
 
-        if (_deteced_player)
+        if (!_deteced_player)
             wander();
         else
             chase();
@@ -53,19 +58,78 @@ public class AIController : MonoBehaviour {
 
     void wander()
     {
+        float speed;
+        if (_currentTile.Type == TileType.Empty)
+            speed = Time.deltaTime;
+        else
+            speed = Time.deltaTime * 2;
+
+        if (Vector2.Distance(transform.position, _targetTile.Position) >= 0.01f)
+            transform.position = Vector3.MoveTowards(transform.position, _targetTile.Position, speed);
+
+        // Upon reaching the target tile, set it as the current tile
+        if (Vector2.Distance(transform.position, _targetTile.Position) < 0.05f)
+            _currentTile = _targetTile;
+
         if (_currentTile != _targetTile)
             return;
 
-        //TODO:
-        //Decide where to Go
+        //implementing a delay between inputs
+        timerForAction -= Time.deltaTime;
 
-        // Store the enemy orientation for future use (limiting to only one axis at a time)
+        if (timerForAction > 0)
+            return;
+        else
+            getNewDelay();
 
-        // Get the new target tile based on the enemie's intention of movement
+        Vector2 direction;
+        if (Random.Range(1, 100) < randomness * 100)
+        {
+            //Getting random direction
+            direction = getNewDirection();
+            _orientation = direction;
+        }
+        else
+            direction = _orientation;
+
+        // Get the new target tile based on the player's intention of movement
+        Tile tile = GameController.Instance.GetWallTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
+        if (tile != null)
+            _targetTile = tile;
+
     }
     void chase()
     {
 
+    }
+
+    private Vector2 getNewDirection()
+    {
+        Vector2 directionVector;
+
+        int randomDirection = Random.Range(1, 4);
+        switch (randomDirection)
+        {
+            case 1:
+                directionVector = Vector2.up;
+                break;
+            case 2:
+                directionVector = Vector2.right;
+                break;
+            case 3:
+                directionVector = Vector2.down;
+                break;
+            default:
+                directionVector = Vector2.left;
+                break;
+        }
+
+        return directionVector;
+    }
+
+    private void getNewDelay()
+    {
+        timerForAction = Random.Range(0f, 3f);
     }
 
     /*  public GameObject Rocket;

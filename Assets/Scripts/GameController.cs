@@ -82,8 +82,9 @@ public class GameController : MonoBehaviour
             int random = Random.Range(0, (emptyTiles.Count - 1));
             Tile startingTile = emptyTiles[random];
 
-            Debug.Log("X " + startingTile.X + " Y: " + startingTile.Y);
             GameObject currEnemy = Instantiate(enemy, new Vector3(startingTile.X, startingTile.Y, 0), Quaternion.identity);
+            AIController enemyAI = currEnemy.GetComponent<AIController>();
+            enemyAI.setTile(startingTile);
         }
     }
 
