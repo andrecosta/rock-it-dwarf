@@ -34,8 +34,7 @@ public class AIController : MonoBehaviour {
     void Update () {
         Animation();
 
-        _deteced_player = checkIfPlayer();
-        if (!_deteced_player)
+        if (!checkIfPlayer())
             wander();
         else
             chase();
@@ -59,7 +58,7 @@ public class AIController : MonoBehaviour {
         _sr.sprite = _animations[_animationFrame];
     }
 
-    void wander()
+    bool finishedMovement()
     {
         float speed;
         if (_currentTile.Type == TileType.Empty)
@@ -75,8 +74,16 @@ public class AIController : MonoBehaviour {
             _currentTile = _targetTile;
 
         if (_currentTile != _targetTile)
-            return;
+            return false;
+        else
+            return true;
+    }
 
+    void wander()
+    {
+
+        if (!finishedMovement())
+            return;
         //implementing a delay between inputs
         timerForAction -= Time.deltaTime;
 
@@ -102,13 +109,34 @@ public class AIController : MonoBehaviour {
     }
     void chase()
     {
+        if (!finishedMovement())
+            return;
+        GameObject player = _gameController.player;
+        Vector2 direction;
 
+        float xToPlayer = (player.transform.position.x - transform.position.x);
+        float yToPlayer = (player.transform.position.y - transform.position.y);
+
+        if (Vector2.SqrMagnitude(player.transform.position - transform.position) < 0.5f)
+            return;
+
+        //getting the most critical direction
+        if (Mathf.Abs(yToPlayer) > Mathf.Abs(xToPlayer))
+            direction = new Vector2(0, Mathf.Sign(yToPlayer));
+        else 
+            direction = new Vector2(Mathf.Sign(xToPlayer), 0);
+        _orientation = direction;
+
+        Tile tile = GameController.Instance.GetWallTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
+        if (tile != null)
+            _targetTile = tile;
     }
 
     private bool checkIfPlayer()
     {
-        //if (Vector3.SqrMagnitude(transform.position - _gameController))
-        return false;
+        if (Vector2.SqrMagnitude(transform.position - _gameController.player.transform.position) < 20)
+            return true;
+        else return false;
     }
 
     private Vector2 getNewDirection()
@@ -140,79 +168,7 @@ public class AIController : MonoBehaviour {
         timerForAction = Random.Range(0f, 1f);
     }
 
-    /*  public GameObject Rocket;
-    public Vector2 getOrientation()
-    {
-        return _orientation;
-    }
-
-    void Update()
-    {
-        Movement();
-
-        if (Input.GetKey(KeyCode.Space))
-        {
-            _digTimer -= Time.deltaTime;
-            if (_digTimer <= 0)
-            {
-                Dig();
-                _digTimer = 1;
-            }
-        }
-        else
-            _digTimer = 1;
-
-        if (_shootCooldown > 0)
-            _shootCooldown -= Time.deltaTime;
-        else if (Input.GetKey(KeyCode.LeftControl))
-        {
-            Shoot();
-            _shootCooldown = 1;
-        }
-
-        Animation();
-    }
-
-    void LateUpdate()
-    {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + Vector3.forward * -10, Time.deltaTime*9);
-    }
-
-    void Movement()
-    {
-        // Move the player towards the target tile
-        if (Vector2.Distance(transform.position, _targetTile.Position) >= 0.01f)
-            transform.position = Vector3.MoveTowards(transform.position, _targetTile.Position, Time.deltaTime*2);
-
-        // Upon reaching the target tile, set it as the current tile
-        if (Vector2.Distance(transform.position, _targetTile.Position) < 0.05f)
-            _currentTile = _targetTile;
-
-        // Stop here if the player has not yet reached the target tile
-        if (_currentTile != _targetTile)
-            return;
-
-        // Read the player input
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
-
-        // Stop here if the player is stopped
-        if (h == 0 && v == 0)
-            return;
-
-        // Store the player's orientation for future use (limiting to only one axis at a time)
-        _orientation = new Vector2(h, v);
-        if (h != 0)
-            _lastHorizontalOrientation = _orientation.x;
-        if (Mathf.Abs(h) > 0)
-            _orientation.y = 0;
-
-        // Get the new target tile based on the player's intention of movement
-        Tile tile = GameController.Instance.GetWallTileAt(transform.position.x + _orientation.x, transform.position.y + _orientation.y);
-        if (tile != null && tile.Type == TileType.Wall)
-            _targetTile = tile;
-    }
-
+    /*
     void Dig()
     {
         if (_currentTile != _targetTile)

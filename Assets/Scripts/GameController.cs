@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     //Map Generation Variables
     public int mapSize, mapTunnelAmmount, mapRoomAmmount;
     public float mapRandomness, mapEmptyArea;
+    public GameObject player;
     public Tile[,] FloorTiles;
     public Tile[,] WallTiles;
     public List<Tile> emptyTiles;

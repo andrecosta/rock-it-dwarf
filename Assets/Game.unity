@@ -123,6 +123,7 @@ MonoBehaviour:
   mapRoomAmmount: 1
   mapRandomness: 0.2
   mapEmptyArea: 0.1
+  player: {fileID: 2118846463}
   enemy: {fileID: 1839030531504768, guid: 3c229a6636622be44a33612bb9b0547f, type: 2}
   enemyAmmount: 5
 --- !u!4 &246236897
@@ -368,3 +369,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2118846463 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1307935676478820, guid: 8e8f4d8e331a8594aa7c992be2fcae96,
+    type: 2}
+  m_PrefabInternal: {fileID: 368218029}
