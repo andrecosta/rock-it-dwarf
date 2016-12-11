@@ -82,14 +82,13 @@ public class AIController : MonoBehaviour {
 
         if (timerForAction > 0)
             return;
-        else
-            getNewDelay();
 
         Vector2 direction;
         if (Random.Range(1, 100) < randomness * 100)
         {
             //Getting random direction
             direction = getNewDirection();
+            getNewDelay();
             _orientation = direction;
         }
         else
@@ -138,7 +137,7 @@ public class AIController : MonoBehaviour {
 
     private void getNewDelay()
     {
-        timerForAction = Random.Range(0f, 3f);
+        timerForAction = Random.Range(0f, 1f);
     }
 
     /*  public GameObject Rocket;
