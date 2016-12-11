@@ -54,7 +54,7 @@ public class CaveCollapser : MonoBehaviour
 
         foreach (Tile tile in openTiles)
         {
-            if (Random.value > 0.1f)
+            if (Random.value <= 0.1f)
                 tile.Type = TileType.Empty;
         }
     }

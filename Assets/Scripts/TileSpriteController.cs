@@ -313,7 +313,7 @@ public class TileSpriteController : MonoBehaviour
                 /*if (distanceToPlayer < 2)
                     intensity = 0;
                 else */
-                    intensity = Mathf.InverseLerp(0, 8, shadowValue);
+                    intensity = Mathf.InverseLerp(0.5f, 8, shadowValue);
             }
             else
                 intensity = 1;
