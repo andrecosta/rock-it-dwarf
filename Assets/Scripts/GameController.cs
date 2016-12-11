@@ -11,14 +11,15 @@ public class GameController : MonoBehaviour
 
     //Map Generation Variables
     public int mapSize, mapTunnelAmmount, mapRoomAmmount;
-    public int enemyAmmount;
     public float mapRandomness, mapEmptyArea;
     public Tile[,] FloorTiles;
     public Tile[,] WallTiles;
+    public List<Tile> emptyTiles;
 
     public Action<Tile> CallbackTileChanged { get; set; }
     private MapGenerator _map;
-
+    public GameObject enemy;
+    public int enemyAmmount;
     void Awake()
     {
         // Singleton
@@ -32,6 +33,9 @@ public class GameController : MonoBehaviour
         _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness);
         FloorTiles = _map.getFloors();
         WallTiles = _map.getWalls();
+        emptyTiles = _map.getEmptyTiles();
+
+        instantiateEnemies();
     }
 
     void Update()
@@ -70,4 +74,18 @@ public class GameController : MonoBehaviour
         if (CallbackTileChanged != null)
             CallbackTileChanged(tile);
     }
+
+    private void instantiateEnemies()
+    {
+        for (int i = 0; i < enemyAmmount; i++)
+        {
+            int random = Random.Range(0, (emptyTiles.Count - 1));
+            Tile startingTile = emptyTiles[random];
+
+            Debug.Log("X " + startingTile.X + " Y: " + startingTile.Y);
+            GameObject currEnemy = Instantiate(enemy, new Vector3(startingTile.X, startingTile.Y, 0), Quaternion.identity);
+        }
+    }
+
+
 }

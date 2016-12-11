@@ -121,9 +121,10 @@ MonoBehaviour:
   mapSize: 40
   mapTunnelAmmount: 10
   mapRoomAmmount: 1
-  enemyAmmount: 0
   mapRandomness: 0.2
   mapEmptyArea: 0.1
+  enemy: {fileID: 1839030531504768, guid: 3c229a6636622be44a33612bb9b0547f, type: 2}
+  enemyAmmount: 5
 --- !u!4 &246236897
 Transform:
   m_ObjectHideFlags: 0
