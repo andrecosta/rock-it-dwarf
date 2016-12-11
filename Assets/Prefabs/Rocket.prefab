@@ -922,19 +922,19 @@ ParticleSystem:
       minGradient:
         key0:
           serializedVersion: 2
-          rgba: 4294967295
+          rgba: 4287927444
         key1:
           serializedVersion: 2
-          rgba: 3355501053
+          rgba: 3357045396
         key2:
           serializedVersion: 2
-          rgba: 31231
+          rgba: 4421810
         key3:
           serializedVersion: 2
-          rgba: 253
+          rgba: 3223939
         key4:
           serializedVersion: 2
-          rgba: 2305611
+          rgba: 1712956
         key5:
           serializedVersion: 2
           rgba: 1250067
@@ -965,7 +965,7 @@ ParticleSystem:
         m_NumAlphaKeys: 3
       minColor: {r: 1, g: 1, b: 1, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 1}
-      minMaxState: 1
+      minMaxState: 3
   UVModule:
     enabled: 0
     frameOverTime:

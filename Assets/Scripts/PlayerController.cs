@@ -119,9 +119,6 @@ public class PlayerController : MonoBehaviour
 
     void Shoot()
     {
-        if (_currentTile != _targetTile)
-            return;
-
         Instantiate(Rocket, transform.position, Quaternion.LookRotation(transform.forward, _orientation));
     }
 
