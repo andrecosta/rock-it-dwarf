@@ -7,6 +7,7 @@ public class AIController : MonoBehaviour {
     public float randomness = 0.2f;
 
     private Tile _currentTile;
+    private GameController _gameController;
     private Tile _targetTile;
     private float _moveTimer;
     private Vector2 _orientation;
@@ -24,6 +25,7 @@ public class AIController : MonoBehaviour {
     {
         // Load animation
         _animations = Resources.LoadAll<Sprite>("Sprites/LittleDwarf");
+        _gameController = GameController.Instance;
         _sr = GetComponent<SpriteRenderer>();
         _orientation = getNewDirection();
         _targetTile = _currentTile;
@@ -32,6 +34,7 @@ public class AIController : MonoBehaviour {
     void Update () {
         Animation();
 
+        _deteced_player = checkIfPlayer();
         if (!_deteced_player)
             wander();
         else
@@ -101,6 +104,11 @@ public class AIController : MonoBehaviour {
     void chase()
     {
 
+    }
+
+    private bool checkIfPlayer()
+    {
+        return true;
     }
 
     private Vector2 getNewDirection()

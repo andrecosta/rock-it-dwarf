@@ -319,7 +319,6 @@ public class TileSpriteController : MonoBehaviour
                 intensity = 1;
 
             shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, intensity, Time.deltaTime * 4);
-            //shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, 0, Time.deltaTime * 2);
         }
     }
 
@@ -345,7 +344,6 @@ public class TileSpriteController : MonoBehaviour
                 D = D - dx;
             }
             D = D + dy;
-
         }
     }
 }

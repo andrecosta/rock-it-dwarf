@@ -50,9 +50,9 @@ TagManager:
   - name: Characters
     uniqueID: 1218156061
     locked: 0
-  - name: LOS
-    uniqueID: 4026358329
-    locked: 0
   - name: Enemies
     uniqueID: 3154947025
+    locked: 0
+  - name: LOS
+    uniqueID: 4026358329
     locked: 0
