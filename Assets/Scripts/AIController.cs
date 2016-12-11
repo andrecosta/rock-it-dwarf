@@ -14,6 +14,7 @@ public class AIController : MonoBehaviour {
     private Sprite[] _animations;
     private float _animationTimer;
     private int _animationFrame;
+    private int _groundType = 0;
     private SpriteRenderer _sr;
     private float _lastHorizontalOrientation;
     private bool _deteced_player;
@@ -61,13 +62,37 @@ public class AIController : MonoBehaviour {
     bool finishedMovement()
     {
         float speed;
-        if (_currentTile.Type == TileType.Empty)
-            speed = Time.deltaTime;
+
+        if (_groundType == 0)
+        {
+            switch (_targetTile.Type)
+            {
+                case TileType.Wall:
+                    _groundType = 2;
+                    break;
+                case TileType.Empty:
+                    _groundType = 1;
+                    break;
+                default:
+                    _groundType = 2;
+                    break;
+            }
+        }
+
+        if (_groundType == 1)
+            speed = Time.deltaTime * 1 / 2;
+
         else
-            speed = Time.deltaTime * 2;
+            speed = (Time.deltaTime * 3 / 2);
 
         if (Vector2.Distance(transform.position, _targetTile.Position) >= 0.01f)
             transform.position = Vector3.MoveTowards(transform.position, _targetTile.Position, speed);
+
+        if (Vector2.Distance(transform.position, _targetTile.Position) < 0.05f)
+            _currentTile = _targetTile;
+
+        if (Vector2.Distance(transform.position, _targetTile.Position) < 0.4f)
+            Dig();
 
         // Upon reaching the target tile, set it as the current tile
         if (Vector2.Distance(transform.position, _targetTile.Position) < 0.05f)
@@ -76,7 +101,11 @@ public class AIController : MonoBehaviour {
         if (_currentTile != _targetTile)
             return false;
         else
+        {
+            _groundType = 0;
             return true;
+        }
+           
     }
 
     void wander()
@@ -168,10 +197,9 @@ public class AIController : MonoBehaviour {
         timerForAction = Random.Range(0f, 1f);
     }
 
-    /*
     void Dig()
     {
-        if (_currentTile != _targetTile)
+        if (_currentTile == _targetTile)
             return;
 
         Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
@@ -179,6 +207,7 @@ public class AIController : MonoBehaviour {
             GameController.Instance.GetWallTileAt(tile.X, tile.Y).Type = TileType.Wall;
     }
 
+    /*
     void Shoot()
     {
         if (_currentTile != _targetTile)
