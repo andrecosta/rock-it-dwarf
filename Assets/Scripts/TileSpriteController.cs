@@ -13,6 +13,7 @@ public class TileSpriteController : MonoBehaviour
     public Dictionary<Tile, SpriteRenderer> GeneratedShadows { get; private set; }
 
     private PlayerController _player;
+    private List<Tile> _checkedTiles;
 
     private Sprite _floorSprite;
     private Sprite _shadowSprite;
@@ -58,6 +59,7 @@ public class TileSpriteController : MonoBehaviour
 
     void Start()
     {
+        _checkedTiles = new List<Tile>();
         // Instantiate the floor tile GameObjects
         GeneratedTiles = new Dictionary<Tile, GameObject>();
         GeneratedShadows = new Dictionary<Tile, SpriteRenderer>();
@@ -109,6 +111,7 @@ public class TileSpriteController : MonoBehaviour
 
     void Update()
     {
+        _checkedTiles.Clear();
         calculateShadows();
     }
 
@@ -243,31 +246,105 @@ public class TileSpriteController : MonoBehaviour
     {
         foreach (var shadow in GeneratedShadows)
         {
+
+            int playerX = (int)(_player.transform.position.x + 0.5f);
+            int playerY = (int)(_player.transform.position.y + 0.5f);
+            int tileX = (int)(shadow.Key.Position.x);
+            int tileY = (int)(shadow.Key.Position.y);
+
+            Tile testTile;
+
+            int occusionValue = 0;
+            float intensity = 0;
+
+            // Line drawing algorithm
+            int dx = (tileX - playerX);
+            int dy = (tileY - playerY);
+            int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+            if (dx < 0) dx1 = -1; else if (dx > 0) dx1 = 1;
+            if (dy < 0) dy1 = -1; else if (dy > 0) dy1 = 1;
+            if (dx < 0) dx2 = -1; else if (dx > 0) dx2 = 1;
+            int longest = Mathf.Abs(dx);
+            int shortest = Mathf.Abs(dy);
+
+            if (!(longest > shortest))
+            {
+                longest = Mathf.Abs(dy);
+                shortest = Mathf.Abs(dx);
+                if (dy < 0) dy2 = -1; else if (dy > 0) dy2 = 1;
+                dx2 = 0;
+            }
+
+            int numerator = longest >> 1;
+
+            int D = 2 * dy - dx;
+            int y = playerY;
+            int x = playerX;
+
+            for (int i = 0; i <= longest; i++)
+            {
+                testTile = GameController.Instance.GetWallTileAt(x, y);
+                numerator += shortest;
+                if (!(numerator < longest))
+                {
+                    numerator -= longest;
+                    x += dx1;
+                    y += dy1;
+                }
+                else
+                {
+                    x += dx2;
+                    y += dy2;
+                }
+                if (testTile.Type == TileType.Empty)
+                    occusionValue += 2;
+            }
+
             Vector2 vectorFromPlayer = shadow.Key.Position - new Vector2(_player.transform.position.x, _player.transform.position.y);
             float distanceToPlayer = Vector3.SqrMagnitude(vectorFromPlayer);
 
             float multiplier = 0.63f - (Vector2.Dot(vectorFromPlayer.normalized, _player.getOrientation().normalized) * 0.5f);
             float shadowValue = distanceToPlayer * multiplier;
 
-            if (shadowValue <= 5)
+            if (shadowValue < 5)
             {
-                float intensity;
+                shadowValue += occusionValue;
                 if (distanceToPlayer < 2)
                     intensity = 0;
                 else
                     intensity = Mathf.InverseLerp(0, 5, shadowValue);
-                shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, intensity, Time.deltaTime * 2);
             }
-
             else
-            {
-                shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, 1, Time.deltaTime * 2);
-            }
+                intensity = 1;
+
+            shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, intensity, Time.deltaTime * 2);
+            //shadow.Value.color = Color.black * Mathf.Lerp(shadow.Value.color.a, 0, Time.deltaTime * 2);
         }
     }
 
-    private void _occlusion(int tileX, int tileY, int playerX, int playerY)
+    private void _occlusion(int playerX, int playerY, int tileX, int tileY)
     {
+        int occusionValue = 0;
+        Tile testTile;
+        int dx = tileX - playerX;
+        int dy = tileY - playerY;
+        int D = 2 * dy - dx;
+        int y = playerY;
 
+        for (int x = playerX; x < tileX; x++)
+        {
+            //Tile = GeneratedShadows[x,y] or WallTiles[x,y]
+            testTile = GameController.Instance.GetWallTileAt(x,y);
+            if (testTile.Type == TileType.Wall)
+                occusionValue += 2;
+
+            if (D > 0)
+            {
+                y = y + 1;
+                D = D - dx;
+            }
+            D = D + dy;
+
+        }
     }
 }
