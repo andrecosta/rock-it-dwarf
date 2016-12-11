@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     void LateUpdate()
     {
-        Camera.main.transform.position = transform.position + Vector3.forward * -10;
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + Vector3.forward * -10, Time.deltaTime*9);
     }
 
     void Movement()
