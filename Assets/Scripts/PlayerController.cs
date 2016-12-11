@@ -10,6 +10,10 @@ public class PlayerController : MonoBehaviour
     private Tile _targetTile;
     private float _moveTimer;
     private Vector2 _orientation;
+    private Sprite[] _animations;
+    private float _animationTimer;
+    private int _animationFrame;
+    private SpriteRenderer _sr;
 
     void Start()
     {
@@ -23,6 +27,10 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = _currentTile.Position;
         Camera.main.transform.position = transform.position + Vector3.forward * -10;
+
+        // Load animation
+        _animations = Resources.LoadAll<Sprite>("Sprites/LittleDwarf");
+        _sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -34,6 +42,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
             Shoot();
+
+        Animation();
     }
 
     void LateUpdate()
@@ -45,7 +55,7 @@ public class PlayerController : MonoBehaviour
     {
 
         if (Vector2.Distance(transform.position, _targetTile.Position) >= 0.01f)
-            transform.position = Vector3.MoveTowards(transform.position, _targetTile.Position, Time.deltaTime * 2);
+            transform.position = Vector3.MoveTowards(transform.position, _targetTile.Position, Time.deltaTime*2);
 
         if (Vector2.Distance(transform.position, _targetTile.Position) < 0.05f)
             _currentTile = _targetTile;
@@ -83,5 +93,22 @@ public class PlayerController : MonoBehaviour
             return;
 
         Instantiate(Rocket, transform.position, Quaternion.LookRotation(transform.forward, _orientation));
+    }
+
+    void Animation()
+    {
+        if (_currentTile == _targetTile)
+            _animationFrame = 0;
+        else if (_animationTimer <= 0)
+        {
+            _animationTimer = 0.05f;
+            _animationFrame++;
+            if (_animationFrame >= _animations.Length)
+                _animationFrame = 0;
+        }
+        else
+            _animationTimer -= Time.deltaTime;
+
+        _sr.sprite = _animations[_animationFrame];
     }
 }
