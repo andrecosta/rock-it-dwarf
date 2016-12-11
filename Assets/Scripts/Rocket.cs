@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
+    private SpriteRenderer _sr;
+    private ParticleSystem _ps;
+
     void Start()
     {
-
+        _sr = GetComponent<SpriteRenderer>();
+        _ps = GetComponent<ParticleSystem>();
     }
 
     void Update()
     {
+        if (!_sr.enabled)
+            return;
+
         transform.position += transform.up * Time.deltaTime * 4;
 
         Tile tile = GameController.Instance.GetWallTileAt(transform.position.x, transform.position.y);
@@ -42,10 +49,21 @@ public class Rocket : MonoBehaviour
             if (neighbor != null && neighbor.Type != TileType.Wall)
                 neighbor.Type = TileType.Wall;
 
-            Destroy(gameObject);
+            StartCoroutine(Extinguish());
         }
         else if (tile == null)
-            Destroy(gameObject);
+            StartCoroutine(Extinguish());
 
+    }
+
+    IEnumerator Extinguish()
+    {
+        _ps.Stop();
+        _sr.enabled = false;
+
+        while (_ps.isPlaying)
+            yield return null;
+
+        Destroy(gameObject);
     }
 }
