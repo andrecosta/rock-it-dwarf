@@ -10,8 +10,8 @@ public class GameController : MonoBehaviour
     public static GameController Instance { get; private set; }
 
     //Map Generation Variables
-    public int mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea;
-    public float mapRandomness;
+    public int mapSize, mapTunnelAmmount, mapRoomAmmount;
+    public float mapRandomness, mapEmptyArea;
     public Tile[,] FloorTiles;
     public Tile[,] WallTiles;
 
