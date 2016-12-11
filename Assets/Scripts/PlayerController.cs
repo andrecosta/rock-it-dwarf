@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Tile _currentTile;
     private Tile _targetTile;
     private float _moveTimer;
+    private Vector2 _movementDirection;
 
     void Start()
     {
@@ -24,44 +25,39 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+
+        if (Vector2.Distance(transform.position, _targetTile.Position) >= 0.01f)
+            transform.position = Vector3.MoveTowards(transform.position, _targetTile.Position, Time.deltaTime * 2);
+            
+        if (Vector2.Distance(transform.position, _targetTile.Position) < 0.05f)
+            _currentTile = _targetTile;
+
         if (_currentTile != _targetTile)
-        {
-            _moveTimer += Time.deltaTime*2;
-
-            if (_moveTimer <= 1)
-                transform.position = Vector3.Lerp(_currentTile.Position, _targetTile.Position, _moveTimer);
-            else
-            {
-                _currentTile = _targetTile;
-                _moveTimer = 0;
-            }
             return;
-        }
-
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
 
         if (h > 0)
         {
-            Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X + 1, _currentTile.Y);
+            Tile tile = GameController.Instance.GetWallTileAt(transform.position.x + 1, transform.position.y);
             if (tile != null && tile.Type == TileType.Wall)
                 _targetTile = tile;
         }
         else if (h < 0)
         {
-            Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X - 1, _currentTile.Y);
+            Tile tile = GameController.Instance.GetWallTileAt(transform.position.x - 1, transform.position.y);
             if (tile != null && tile.Type == TileType.Wall)
                 _targetTile = tile;
         }
         else if (v > 0)
         {
-            Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X, _currentTile.Y + 1);
+            Tile tile = GameController.Instance.GetWallTileAt(transform.position.x, transform.position.y + 1);
             if (tile != null && tile.Type == TileType.Wall)
                 _targetTile = tile;
         }
         else if (v < 0)
         {
-            Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X, _currentTile.Y - 1);
+            Tile tile = GameController.Instance.GetWallTileAt(transform.position.x, transform.position.y - 1);
             if (tile != null && tile.Type == TileType.Wall)
                 _targetTile = tile;
         }

@@ -58,7 +58,12 @@ public class GameController : MonoBehaviour
 
     public Tile GetTileAt(float x, float y)
     {
-        return GetTileAt((int) Mathf.Floor(x), (int) Math.Floor(y));
+        return GetTileAt((int) Mathf.Round(x), (int) Math.Round(y));
+    }
+
+    public Tile GetWallTileAt(float x, float y)
+    {
+        return GetWallTileAt((int) Mathf.Round(x), (int) Math.Round(y));
     }
 
     public Tile GetTileAt(Vector2 position)
