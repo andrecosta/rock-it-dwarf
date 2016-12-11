@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ac78a0ca5557344b2f90ec1ef967f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ExplosionSound: {fileID: 8300000, guid: 0aa258f715c37414083d5f720481c588, type: 3}
 --- !u!198 &198753565981225848
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer _sr;
     private float _digTimer;
     private float _shootCooldown;
+    private float _lastHorizontalOrientation;
 
     void Start()
     {
@@ -95,6 +96,8 @@ public class PlayerController : MonoBehaviour
 
         // Store the player's orientation for future use (limiting to only one axis at a time)
         _orientation = new Vector2(h, v);
+        if (h != 0)
+            _lastHorizontalOrientation = _orientation.x;
         if (Mathf.Abs(h) > 0)
             _orientation.y = 0;
 
@@ -136,7 +139,7 @@ public class PlayerController : MonoBehaviour
         else
             _animationTimer -= Time.deltaTime;
 
-        _sr.flipX = _orientation.x < 0;
+        _sr.flipX = _lastHorizontalOrientation < 0;
         _sr.sprite = _animations[_animationFrame];
     }
 }
