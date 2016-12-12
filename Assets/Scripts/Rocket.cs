@@ -5,6 +5,7 @@ using UnityEngine;
 public class Rocket : MonoBehaviour
 {
     public AudioClip ExplosionSound;
+    public GameObject ExplosionEffect;
 
     private SpriteRenderer _sr;
     private ParticleSystem _ps;
@@ -53,6 +54,7 @@ public class Rocket : MonoBehaviour
                 neighbor.Type = TileType.Wall;
 
             StartCoroutine(Extinguish());
+        Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
         }
         else if (tile == null)
             StartCoroutine(Extinguish());
