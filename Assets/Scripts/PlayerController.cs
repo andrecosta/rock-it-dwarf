@@ -46,7 +46,8 @@ public class PlayerController : MonoBehaviour
     {
         Movement();
 
-        if (Input.GetKey(KeyCode.Space))
+        Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
+        if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile.Type == TileType.Empty)
         {
             _digTimer -= Time.deltaTime;
             if (_digTimer <= 0)
