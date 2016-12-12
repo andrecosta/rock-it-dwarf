@@ -13,10 +13,10 @@ public class GameController : MonoBehaviour
     public int mapSize, mapTunnelAmmount, mapRoomAmmount;
     public float mapRandomness, mapEmptyArea;
     public GameObject player;
+    public Tile[,] BackgroundTiles;
     public Tile[,] FloorTiles;
-    public Tile[,] WallTiles;
     public Tile[,] LavaTiles;
-    public List<Tile> emptyTiles;
+    public List<Tile> EmptyTiles;
 
     public Action<Tile> CallbackTileChanged { get; set; }
     private MapGenerator _map;
@@ -33,9 +33,9 @@ public class GameController : MonoBehaviour
         Instance = this;
 
         _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness);
-        FloorTiles = _map.getFloors();
-        WallTiles = _map.getWalls();
-        emptyTiles = _map.getEmptyTiles();
+        BackgroundTiles = _map.getBackgroundTiles();
+        FloorTiles = _map.getFloorTiles();
+        EmptyTiles = _map.getEmptyTiles();
 
         // Generate lava tiles
         LavaTiles = new Tile[mapSize, mapSize];
@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
         if (x >= mapSize || x < 0 || y >= mapSize || y < 0)
             return null;
 
-        return FloorTiles[x, y];
+        return BackgroundTiles[x, y];
     }
 
     public Tile GetWallTileAt(int x, int y)
@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
         if (x >= mapSize || x < 0 || y >= mapSize || y < 0)
             return null;
 
-        return WallTiles[x, y];
+        return FloorTiles[x, y];
     }
 
     public Tile GetLavaTileAt(int x, int y)
@@ -107,8 +107,8 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < enemyAmmount; i++)
         {
-            int random = Random.Range(0, (emptyTiles.Count - 1));
-            Tile startingTile = emptyTiles[random];
+            int random = Random.Range(0, (EmptyTiles.Count - 1));
+            Tile startingTile = EmptyTiles[random];
 
             GameObject currEnemy = Instantiate(enemy, new Vector3(startingTile.X, startingTile.Y, 0), Quaternion.identity);
             AIController enemyAI = currEnemy.GetComponent<AIController>();

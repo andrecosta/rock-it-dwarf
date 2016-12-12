@@ -54,7 +54,7 @@ public class CaveCollapser : MonoBehaviour
 
     void Collapse()
     {
-        Tile[] openTiles = GameController.Instance.WallTiles.Cast<Tile>().Where(t => t.Type == TileType.Wall).ToArray();
+        Tile[] openTiles = GameController.Instance.FloorTiles.Cast<Tile>().Where(t => t.Type == TileType.Wall).ToArray();
         if (openTiles.Length == 0)
         {
             Debug.Log("No open tiles left!");

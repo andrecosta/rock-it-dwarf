@@ -56,7 +56,6 @@ public class Rocket : MonoBehaviour
         }
         else if (tile == null)
             StartCoroutine(Extinguish());
-
     }
 
     IEnumerator Extinguish()

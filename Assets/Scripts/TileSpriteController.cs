@@ -68,7 +68,7 @@ public class TileSpriteController : MonoBehaviour
         // Instantiate the floor tile GameObjects
         GeneratedTiles = new Dictionary<Tile, GameObject>();
         GeneratedShadows = new Dictionary<Tile, SpriteRenderer>();
-        foreach (Tile tile in GameController.Instance.FloorTiles)
+        foreach (Tile tile in GameController.Instance.BackgroundTiles)
         {
             GameObject go = new GameObject("TILE FLOOR [" + tile.X + ", " + tile.Y + "]");
             go.transform.SetParent(transform);
@@ -83,7 +83,7 @@ public class TileSpriteController : MonoBehaviour
 
             GeneratedTiles.Add(tile, go);
         }
-        foreach (Tile tile in GameController.Instance.WallTiles)
+        foreach (Tile tile in GameController.Instance.FloorTiles)
         {
             GameObject go = new GameObject("TILE WALL [" + tile.X + ", " + tile.Y + "]");
             go.transform.SetParent(transform);
@@ -421,7 +421,7 @@ public class TileSpriteController : MonoBehaviour
 
         for (int x = playerX; x < tileX; x++)
         {
-            //Tile = GeneratedShadows[x,y] or WallTiles[x,y]
+            //Tile = GeneratedShadows[x,y] or FloorTiles[x,y]
             testTile = GameController.Instance.GetWallTileAt(x,y);
             if (testTile.Type == TileType.Wall)
                 occusionValue += 2;

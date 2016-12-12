@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        foreach (var tile in GameController.Instance.WallTiles)
+        foreach (var tile in GameController.Instance.FloorTiles)
         {
             if (tile.Type == TileType.Wall)
             {

@@ -29,8 +29,8 @@ public class MapGenerator {
 
     }
 
-    public Tile[,] getFloors() { return _floorTiles; }
-    public Tile[,] getWalls() { return _wallTiles; }
+    public Tile[,] getBackgroundTiles() { return _floorTiles; }
+    public Tile[,] getFloorTiles() { return _wallTiles; }
 
     private void _generateTiles(int size)
     {
