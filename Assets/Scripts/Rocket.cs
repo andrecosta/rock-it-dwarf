@@ -22,7 +22,7 @@ public class Rocket : MonoBehaviour
         _sr = GetComponent<SpriteRenderer>();
         _ps = GetComponent<ParticleSystem>();
         transform.position = new Vector3(Mathf.Round(transform.position.x*10)/10, Mathf.Round(transform.position.y*10)/10);
-        print(ShootDirection);
+
         if (Mathf.Abs(ShootDirection.x) > Mathf.Abs(ShootDirection.y))
         {
             _sr.sprite = ShellSpriteHorizontal;

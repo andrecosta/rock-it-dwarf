@@ -163,11 +163,12 @@ public class TileSpriteController : MonoBehaviour
                 sr.color = Color.white;
                 break;
             default:
-                //sr.sprite = null;
+                sr.sprite = ShadowSprite;
                 sr.color = new Color32(41, 26, 14, 255);
                 break;
         }
 
+        // TODO: SIMPLIFY THIS!
         Tile neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y);
         if (neighbor != null && neighbor.Type == TileType.Terrain)
             GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor, ref _terrainSprites);
@@ -217,6 +218,9 @@ public class TileSpriteController : MonoBehaviour
         neighbor = GameController.Instance.GetLavaTileAt(tile.X - 1, tile.Y + 1);
         if (neighbor != null && neighbor.Type == TileType.Lava)
             GeneratedTiles[neighbor].GetComponent<SpriteRenderer>().sprite = GetSpriteFromTileset(neighbor, ref _lavaSprites);
+
+        /*if (tile.Type == TileType.Empty)
+            sr.color = new Color32(41, 26, 14, 255);*/
     }
 
     public Sprite GetSpriteFromTileset(Tile tile, ref Dictionary<string, Sprite> tileset)

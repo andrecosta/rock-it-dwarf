@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
             Movement();
 
         Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
-        if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile.Type == TileType.Empty)
+        if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile != null && tile.Type == TileType.Empty)
         {
             _digTimer -= Time.deltaTime;
             _animator.SetBool("Is Mining", true);
