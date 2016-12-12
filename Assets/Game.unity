@@ -388,6 +388,18 @@ Prefab:
       propertyPath: player
       value: 
       objectReference: {fileID: 1248510319}
+    - target: {fileID: 114983262354729614, guid: 748a6b8f94091294db156c6700ef30a9,
+        type: 2}
+      propertyPath: goal
+      value: 
+      objectReference: {fileID: 1616483581840034, guid: 42b5fe8e2221f604a96a63edd0248a43,
+        type: 2}
+    - target: {fileID: 114983262354729614, guid: 748a6b8f94091294db156c6700ef30a9,
+        type: 2}
+      propertyPath: goalObject
+      value: 
+      objectReference: {fileID: 1616483581840034, guid: 42b5fe8e2221f604a96a63edd0248a43,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 748a6b8f94091294db156c6700ef30a9, type: 2}
   m_IsPrefabParent: 0

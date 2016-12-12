@@ -13,12 +13,15 @@ public class Rocket : MonoBehaviour
     public Sprite ShellSpriteVertical;
 
     public Vector3 ShootDirection;
+    public bool shotByPlayer;
 
     private SpriteRenderer _sr;
     private ParticleSystem _ps;
+    private GameController _gc;
 
     void Start()
     {
+        _gc = GameController.Instance;
         _sr = GetComponent<SpriteRenderer>();
         _ps = GetComponent<ParticleSystem>();
         transform.position = new Vector3(Mathf.Round(transform.position.x*10)/10, Mathf.Round(transform.position.y*10)/10);
@@ -43,38 +46,82 @@ public class Rocket : MonoBehaviour
         transform.position += ShootDirection * Time.deltaTime * 6;
 
         Tile tile = GameController.Instance.GetTileAt(transform.position.x, transform.position.y);
-        if (tile != null && tile.Type == TileType.Empty)
-        {
-            tile.Type = TileType.Terrain;
-            Tile neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y);
-            if (neighbor != null && neighbor.Type != TileType.Terrain)
-                neighbor.Type = TileType.Terrain;
-            neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y);
-            if (neighbor != null && neighbor.Type != TileType.Terrain)
-                neighbor.Type = TileType.Terrain;
-            neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y + 1);
-            if (neighbor != null && neighbor.Type != TileType.Terrain)
-                neighbor.Type = TileType.Terrain;
-            neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y - 1);
-            if (neighbor != null && neighbor.Type != TileType.Terrain)
-                neighbor.Type = TileType.Terrain;
-            neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y + 1);
-            if (neighbor != null && neighbor.Type != TileType.Terrain)
-                neighbor.Type = TileType.Terrain;
-            neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y - 1);
-            if (neighbor != null && neighbor.Type != TileType.Terrain)
-                neighbor.Type = TileType.Terrain;
-            neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y - 1);
-            if (neighbor != null && neighbor.Type != TileType.Terrain)
-                neighbor.Type = TileType.Terrain;
-            neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y + 1);
-            if (neighbor != null && neighbor.Type != TileType.Terrain)
-                neighbor.Type = TileType.Terrain;
 
-            StartCoroutine(Extinguish());
+        if (shotByPlayer)
+        {
+            if ((tile != null && tile.Type == TileType.Empty))
+            {
+                tile.Type = TileType.Terrain;
+                Tile neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y + 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y - 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y + 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y - 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y - 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y + 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+
+                StartCoroutine(Extinguish());
+            }
+            else if (tile == null)
+                StartCoroutine(Extinguish());
         }
-        else if (tile == null)
-            StartCoroutine(Extinguish());
+        else
+        {
+            if ((tile != null && tile.Type == TileType.Empty) || Vector3.Distance(_gc.player.transform.position, transform.position) < 0.2f)
+            {
+                if (Vector3.Distance(_gc.player.transform.position, transform.position) < 1.5f)
+                {
+                    _gc.PlayerDeath();
+                }
+
+                tile.Type = TileType.Terrain;
+                Tile neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y + 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y - 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y + 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y - 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y - 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y + 1);
+                if (neighbor != null && neighbor.Type != TileType.Terrain)
+                    neighbor.Type = TileType.Terrain;
+
+                StartCoroutine(Extinguish());
+            }
+            else if (tile == null)
+                StartCoroutine(Extinguish());
+        }
     }
 
     IEnumerator Extinguish()

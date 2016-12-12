@@ -143,6 +143,7 @@ public class PlayerController : MonoBehaviour
 
         Rocket rocket = Instantiate(RocketPrefab, transform.position, Quaternion.identity);
         rocket.ShootDirection = direction;
+        rocket.shotByPlayer = true;
         _shootCooldown = 1;
         _animator.SetBool("Is Shooting", true);
     }

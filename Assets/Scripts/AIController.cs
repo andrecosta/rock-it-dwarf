@@ -326,6 +326,7 @@ public class AIController : MonoBehaviour {
 
         Rocket rocket = Instantiate(rocketPrefab, transform.position, Quaternion.LookRotation(transform.forward, projectileDirection));
         rocket.ShootDirection = projectileDirection;
+        rocket.shotByPlayer = false;
         _shootCooldown = 1.5f;
     }
 

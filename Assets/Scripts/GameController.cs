@@ -13,14 +13,21 @@ public class GameController : MonoBehaviour
     public int mapSize, mapTunnelAmmount, mapRoomAmmount;
     public float mapRandomness, mapEmptyArea;
     public GameObject player;
+    public GameObject goalObject;
     public Tile[,] TerrainTiles;
     public Tile[,] LavaTiles;
     public List<Tile> EmptyTiles;
+    public List<Tile> goalTiles;
+    public Tile goalTile;
 
     public Action<Tile> CallbackTileChanged { get; set; }
     private MapGenerator _map;
     public GameObject[] enemies;
     public int enemyAmmount;
+    public int existingEnemies;
+
+    private float enemyTimer;
+
     void Awake()
     {
         // Singleton
@@ -35,8 +42,28 @@ public class GameController : MonoBehaviour
         TerrainTiles = _map.getTerrainTiles();
         LavaTiles = _map.getLavaTiles();
         EmptyTiles = _map.getEmptyTiles();
+        goalTiles = _map.goalTiles;
+        goalTile = _map.goalTile;
+        instantiateGoal();
+
+        existingEnemies = 0;
+        enemyTimer = 15;
 
         InstantiateEnemies();
+    }
+
+    void Update()
+    {
+        if (existingEnemies != enemyAmmount)
+        {
+            enemyTimer -= Time.deltaTime;
+            if (enemyTimer < 0)
+            {
+                InstantiateEnemies();
+                enemyTimer = 15;
+            }
+
+        }
     }
 
     public Tile GetTileAt(int x, int y)
@@ -74,7 +101,7 @@ public class GameController : MonoBehaviour
 
     private void InstantiateEnemies()
     {
-        for (int i = 0; i < enemyAmmount; i++)
+        while (enemyAmmount - existingEnemies > 0)
         {
             int random = Random.Range(0, (EmptyTiles.Count - 1));
             Tile startingTile = EmptyTiles[random];
@@ -84,12 +111,23 @@ public class GameController : MonoBehaviour
             GameObject currEnemy = Instantiate(enemy, new Vector3(startingTile.X, startingTile.Y, 0), Quaternion.identity);
             AIController enemyAI = currEnemy.GetComponent<AIController>();
             enemyAI.setTile(startingTile);
+            existingEnemies++;
         }
+    }
+
+    private void instantiateGoal()
+    {
+        if (goalObject.transform.position.x != 0)
+            Instantiate(goalObject, new Vector3(goalTile.X, goalTile.Y, 0), Quaternion.identity);
     }
 
     public void PlayerDeath()
     {
         Debug.Log("Dead Player");
+    }
+    public void PlayerVictory()
+    {
+        Debug.Log("Victory");
     }
 
 }

@@ -10,12 +10,15 @@ public class MapGenerator {
     private float _mapRandomness, _emptyArea;
     private Tile[,] _terrainTiles, _lavaTiles;
     private List<Tile> _emptyTiles;
-    public List<Tile> goalTiles;
     private GameObject _enemyPrefab;
-   
+
+    public List<Tile> goalTiles;
+    public Tile goalTile;
+
 
     public MapGenerator(int size, int tunels, int rooms, float area, float random)
     {
+        goalTiles = new List<Tile>();
         _mapSize = size;
         _emptyTiles = new List<Tile>();
         _tunnelAmmount = tunels;
@@ -25,6 +28,7 @@ public class MapGenerator {
 
         _generateTiles(_mapSize);
         _generateSpace();
+        _getGoal();
     }
 
     public Tile[,] getTerrainTiles() { return _terrainTiles; }
@@ -297,5 +301,10 @@ public class MapGenerator {
     public List<Tile> getEmptyTiles()
     {
         return _emptyTiles;
+    }
+
+    private void _getGoal()
+    {
+        goalTile = goalTiles[Random.Range(0,goalTiles.Count -1)];
     }
 }
