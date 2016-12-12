@@ -14,7 +14,8 @@ public class PlayerController : MonoBehaviour
     private Tile _targetTile;
     private float _moveTimer;
     private Vector2 _orientation;
-    private Sprite[] _animations;
+    private Sprite[] _walkingAnimation;
+    private Sprite[] _miningAnimation;
     private float _animationTimer;
     private int _animationFrame;
     private SpriteRenderer _sr;
@@ -36,7 +37,8 @@ public class PlayerController : MonoBehaviour
         Camera.main.transform.position = transform.position + Vector3.forward * -10;
 
         // Load animation
-        _animations = Resources.LoadAll<Sprite>("Sprites/LittleDwarf");
+        _walkingAnimation = Resources.LoadAll<Sprite>("Sprites/DwarfWalking");
+        _miningAnimation = Resources.LoadAll<Sprite>("Sprites/DwarfMining");
         _sr = GetComponent<SpriteRenderer>();
     }
 
@@ -52,22 +54,26 @@ public class PlayerController : MonoBehaviour
                 Dig();
                 _digTimer = 1;
             }
+
+            MiningAnimation();
         }
         else
+        {
             _digTimer = 1;
 
-        if (_shootCooldown > 0)
-            _shootCooldown -= Time.deltaTime;
-        else if (Input.GetKey(KeyCode.LeftArrow))
-            Shoot(Vector2.left);
-        else if (Input.GetKey(KeyCode.RightArrow))
-            Shoot(Vector2.right);
-        else if (Input.GetKey(KeyCode.UpArrow))
-            Shoot(Vector2.up);
-        else if (Input.GetKey(KeyCode.DownArrow))
-            Shoot(Vector2.down);
+            if (_shootCooldown > 0)
+                _shootCooldown -= Time.deltaTime;
+            else if (Input.GetKey(KeyCode.LeftArrow))
+                Shoot(Vector2.left);
+            else if (Input.GetKey(KeyCode.RightArrow))
+                Shoot(Vector2.right);
+            else if (Input.GetKey(KeyCode.UpArrow))
+                Shoot(Vector2.up);
+            else if (Input.GetKey(KeyCode.DownArrow))
+                Shoot(Vector2.down);
 
-        Animation();
+            Animation();
+        }
     }
 
     void LateUpdate()
@@ -134,13 +140,31 @@ public class PlayerController : MonoBehaviour
         {
             _animationTimer = 0.05f;
             _animationFrame++;
-            if (_animationFrame >= _animations.Length)
-                _animationFrame = 0;
         }
         else
             _animationTimer -= Time.deltaTime;
 
+        if (_animationFrame >= _walkingAnimation.Length)
+            _animationFrame = 0;
+
         _sr.flipX = _lastHorizontalOrientation < 0;
-        _sr.sprite = _animations[_animationFrame];
+        _sr.sprite = _walkingAnimation[_animationFrame];
+    }
+
+    void MiningAnimation()
+    {
+        if (_animationTimer <= 0)
+        {
+            _animationTimer = 0.05f;
+            _animationFrame++;
+        }
+        else
+            _animationTimer -= Time.deltaTime;
+
+        if (_animationFrame >= _miningAnimation.Length)
+            _animationFrame = 0;
+
+        _sr.flipX = _lastHorizontalOrientation < 0;
+        _sr.sprite = _miningAnimation[_animationFrame];
     }
 }

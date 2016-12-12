@@ -25,7 +25,7 @@ public class AIController : MonoBehaviour {
     void Start()
     {
         // Load animation
-        _animations = Resources.LoadAll<Sprite>("Sprites/LittleDwarf");
+        _animations = Resources.LoadAll<Sprite>("Sprites/DwarfWalking");
         _gameController = GameController.Instance;
         _sr = GetComponent<SpriteRenderer>();
         _orientation = getNewDirection();
