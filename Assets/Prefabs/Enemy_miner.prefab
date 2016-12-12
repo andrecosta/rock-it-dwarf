@@ -54,6 +54,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomness: 0.2
   type: 1
+  hardMode: 0
+    type: 2}
 --- !u!212 &212334298362340350
 SpriteRenderer:
   m_ObjectHideFlags: 1

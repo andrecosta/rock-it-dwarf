@@ -7,8 +7,10 @@ public class AIController : MonoBehaviour {
     public float randomness;
     public int type;
     public bool hardMode = false;
+    public Rocket rocketPrefab;
 
     private Tile _currentTile;
+    private float _shootCooldown = 2;
     private GameController _gameController;
     private Tile _targetTile;
     private float _moveTimer;
@@ -21,6 +23,7 @@ public class AIController : MonoBehaviour {
     private float _lastHorizontalOrientation;
     private bool _deteced_player;
     private float timerForAction = 0;
+    private GameObject _player;
 
     public void setTile(Tile currTile) { _currentTile = currTile; }
 
@@ -29,6 +32,7 @@ public class AIController : MonoBehaviour {
         // Load animation
         _animations = Resources.LoadAll<Sprite>("Sprites/DwarfWalking");
         _gameController = GameController.Instance;
+        _player = _gameController.player;
         _sr = GetComponent<SpriteRenderer>();
         _orientation = getNewDirection();
         _targetTile = _currentTile;
@@ -156,11 +160,13 @@ public class AIController : MonoBehaviour {
 
         if (type == 2)
             chase(xToPlayer, yToPlayer);
-        else
-            return;
+        else if (type == 1)
+            shoot_bazooka(xToPlayer, yToPlayer);
+        else if (type == 3)
+            shoot_arrow(xToPlayer, yToPlayer);
+        return;
 
     }
-
 
     // Method for the chaser enemies
     private void chase(float xToPlayer, float yToPlayer)
@@ -179,9 +185,78 @@ public class AIController : MonoBehaviour {
             _targetTile = tile;
     }
 
+    private void shoot_bazooka(float xToPlayer, float yToPlayer)
+    {
+        Vector2 direction;
+        Tile tile;
+
+
+        if (Mathf.Abs(yToPlayer) <= 0.5)
+        {
+            if (!checkWalls())
+            {
+                direction = new Vector2(Mathf.Sign(xToPlayer), 0);
+                _orientation = direction;
+
+                tile = GameController.Instance.GetTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
+                if (tile != null)
+                    _targetTile = tile;
+                return;
+            }
+        }
+        else if (Mathf.Abs(xToPlayer) <= 0.5)
+        {
+            if (!checkWalls())
+            {
+                direction = new Vector2(Mathf.Sign(yToPlayer), 0);
+                _orientation = direction;
+
+                tile = GameController.Instance.GetTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
+                if (tile != null)
+                    _targetTile = tile;
+                return;
+            }
+        }
+        else
+        {
+            if (Mathf.Abs(yToPlayer) > Mathf.Abs(xToPlayer))
+                direction = new Vector2(Mathf.Sign(xToPlayer), 0);
+            else
+                direction = new Vector2(0, Mathf.Sign(yToPlayer));
+            _orientation = direction;
+
+            tile = GameController.Instance.GetTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
+            if (tile != null)
+                _targetTile = tile;
+            return;
+        }
+
+        if (_shootCooldown > 0)
+        {
+            _shootCooldown -= Time.deltaTime;
+            return;
+        }
+
+        if (Mathf.Abs(yToPlayer) > Mathf.Abs(xToPlayer)) 
+            Shoot(new Vector2(0, Mathf.Sign(yToPlayer)));
+        else
+            Shoot(new Vector2(Mathf.Sign(xToPlayer), 0));
+
+        //getting the most critical direction
+
+
+
+    }
+
+    private void shoot_arrow(float xToPlayer, float yToPlayer)
+    {
+
+    }
+
+
     private bool checkIfPlayer()
     {
-        if (Vector2.SqrMagnitude(transform.position - _gameController.player.transform.position) < 20)
+        if (Vector2.SqrMagnitude(transform.position - _gameController.player.transform.position) < 40)
             return true;
         else return false;
     }
@@ -215,6 +290,8 @@ public class AIController : MonoBehaviour {
         timerForAction = Random.Range(0f, 1f);
     }
 
+
+
     void Dig()
     {
         if (_currentTile == _targetTile)
@@ -225,14 +302,17 @@ public class AIController : MonoBehaviour {
             GameController.Instance.GetTileAt(tile.X, tile.Y).Type = TileType.Terrain;
     }
 
-    /*
-    void Shoot()
+    void Shoot(Vector2 projectileDirection)
     {
         if (_currentTile != _targetTile)
             return;
 
-        Instantiate(RocketPrefab, transform.position, Quaternion.LookRotation(transform.forward, _orientation));
+        Rocket rocket = Instantiate(rocketPrefab, transform.position, Quaternion.LookRotation(transform.forward, projectileDirection));
+        rocket.ShootDirection = projectileDirection;
+        _shootCooldown = 1;
     }
+
+    /*
 
     void Animation()
     {
@@ -251,4 +331,62 @@ public class AIController : MonoBehaviour {
         _sr.flipX = _lastHorizontalOrientation < 0;
         _sr.sprite = _animations[_animationFrame];
     }*/
+
+
+    private bool checkWalls()
+    {
+        int playerX = (int)(_player.transform.position.x + 0.5f);
+        int playerY = (int)(_player.transform.position.y + 0.5f);
+        int enemyX = (int)(transform.position.x + 0.5f);
+        int enemyY = (int)(transform.position.y + 0.5f);
+
+        Tile testTile;
+
+        bool visible = true;
+
+        // Line drawing algorithm
+        int dx = (enemyX - playerX);
+        int dy = (enemyY - playerY);
+        int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
+        if (dx < 0) dx1 = -1; else if (dx > 0) dx1 = 1;
+        if (dy < 0) dy1 = -1; else if (dy > 0) dy1 = 1;
+        if (dx < 0) dx2 = -1; else if (dx > 0) dx2 = 1;
+        int longest = Mathf.Abs(dx);
+        int shortest = Mathf.Abs(dy);
+
+        if (!(longest > shortest))
+        {
+            longest = Mathf.Abs(dy);
+            shortest = Mathf.Abs(dx);
+            if (dy < 0) dy2 = -1; else if (dy > 0) dy2 = 1;
+            dx2 = 0;
+        }
+
+        int numerator = longest >> 1;
+
+        int D = 2 * dy - dx;
+        int y = playerY;
+        int x = playerX;
+
+        for (int i = 0; i <= longest; i++)
+        {
+
+            testTile = GameController.Instance.GetTileAt(x, y);
+            numerator += shortest;
+            if (!(numerator < longest))
+            {
+                numerator -= longest;
+                x += dx1;
+                y += dy1;
+            }
+            else
+            {
+                x += dx2;
+                y += dy2;
+            }
+            if (testTile.Type == TileType.Empty)
+                visible = false;
+        }
+        return visible;
+    }
 }
