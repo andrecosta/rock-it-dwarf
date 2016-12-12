@@ -328,6 +328,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114983262354729614, guid: 748a6b8f94091294db156c6700ef30a9,
+        type: 2}
+      propertyPath: enemies.Array.size
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4252956377362118, guid: 748a6b8f94091294db156c6700ef30a9, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -360,6 +365,34 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114983262354729614, guid: 748a6b8f94091294db156c6700ef30a9,
+        type: 2}
+      propertyPath: enemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 1206572219408212, guid: ba04f35ca66f3e1468bb6df4b8c57607,
+        type: 2}
+    - target: {fileID: 114983262354729614, guid: 748a6b8f94091294db156c6700ef30a9,
+        type: 2}
+      propertyPath: enemies.Array.data[1]
+      value: 
+      objectReference: {fileID: 1959083239025914, guid: cf88e5d00cf4d1049a054ec91d0a4259,
+        type: 2}
+    - target: {fileID: 114983262354729614, guid: 748a6b8f94091294db156c6700ef30a9,
+        type: 2}
+      propertyPath: enemies.Array.data[2]
+      value: 
+      objectReference: {fileID: 1839030531504768, guid: 3c229a6636622be44a33612bb9b0547f,
+        type: 2}
+    - target: {fileID: 114983262354729614, guid: 748a6b8f94091294db156c6700ef30a9,
+        type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1248510319}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 748a6b8f94091294db156c6700ef30a9, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1248510319 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1307935676478820, guid: 8e8f4d8e331a8594aa7c992be2fcae96,
+    type: 2}
+  m_PrefabInternal: {fileID: 368218029}

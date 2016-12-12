@@ -255,7 +255,7 @@ public class MapGenerator {
     {
         Vector2 directionVector;
 
-        int randomDirection = Random.Range(1, 4);
+        int randomDirection = Random.Range(1, 5);
         switch (randomDirection)
         {
             case 1:

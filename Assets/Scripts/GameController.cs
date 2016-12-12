@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
 
     public Action<Tile> CallbackTileChanged { get; set; }
     private MapGenerator _map;
-    public GameObject enemy;
+    public GameObject[] enemies;
     public int enemyAmmount;
     void Awake()
     {
@@ -70,6 +70,7 @@ public class GameController : MonoBehaviour
         if (CallbackTileChanged != null)
             CallbackTileChanged(tile);
     }
+   
 
     private void InstantiateEnemies()
     {
@@ -78,11 +79,17 @@ public class GameController : MonoBehaviour
             int random = Random.Range(0, (EmptyTiles.Count - 1));
             Tile startingTile = EmptyTiles[random];
 
+            GameObject enemy = enemies[Random.Range(0, enemies.Length)];
+
             GameObject currEnemy = Instantiate(enemy, new Vector3(startingTile.X, startingTile.Y, 0), Quaternion.identity);
             AIController enemyAI = currEnemy.GetComponent<AIController>();
             enemyAI.setTile(startingTile);
         }
     }
 
+    public void PlayerDeath()
+    {
+        Debug.Log("Dead Player");
+    }
 
 }

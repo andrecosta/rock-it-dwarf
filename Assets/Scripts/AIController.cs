@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour {
 
-    public float randomness = 0.2f;
+    public float randomness;
+    public int type;
+    public bool hardMode = false;
 
     private Tile _currentTile;
     private GameController _gameController;
@@ -38,7 +40,7 @@ public class AIController : MonoBehaviour {
         if (!checkIfPlayer())
             wander();
         else
-            chase();
+            alerted();
     }
 
     void Animation()
@@ -136,23 +138,39 @@ public class AIController : MonoBehaviour {
             _targetTile = tile;
 
     }
-    void chase()
+    void alerted()
     {
         if (!finishedMovement())
             return;
+
         GameObject player = _gameController.player;
-        Vector2 direction;
 
         float xToPlayer = (player.transform.position.x - transform.position.x);
         float yToPlayer = (player.transform.position.y - transform.position.y);
 
         if (Vector2.SqrMagnitude(player.transform.position - transform.position) < 0.5f)
+        {
+            _gameController.PlayerDeath();
             return;
+        }
+
+        if (type == 2)
+            chase(xToPlayer, yToPlayer);
+        else
+            return;
+
+    }
+
+
+    // Method for the chaser enemies
+    private void chase(float xToPlayer, float yToPlayer)
+    {
+        Vector2 direction;
 
         //getting the most critical direction
         if (Mathf.Abs(yToPlayer) > Mathf.Abs(xToPlayer))
             direction = new Vector2(0, Mathf.Sign(yToPlayer));
-        else 
+        else
             direction = new Vector2(Mathf.Sign(xToPlayer), 0);
         _orientation = direction;
 
@@ -172,7 +190,7 @@ public class AIController : MonoBehaviour {
     {
         Vector2 directionVector;
 
-        int randomDirection = Random.Range(1, 4);
+        int randomDirection = Random.Range(1, 5);
         switch (randomDirection)
         {
             case 1:
