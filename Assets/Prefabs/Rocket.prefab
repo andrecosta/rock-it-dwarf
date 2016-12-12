@@ -57,6 +57,10 @@ MonoBehaviour:
   ExplosionSound: {fileID: 8300000, guid: 0aa258f715c37414083d5f720481c588, type: 3}
   ExplosionEffect: {fileID: 1010839960038856, guid: 25a5b6f2950fe404a9ae829850fc8d6e,
     type: 2}
+  ShellSpriteHorizontal: {fileID: 21300000, guid: 92eca3ea871ccb443a2dcf498f8939ce,
+    type: 3}
+  ShellSpriteVertical: {fileID: 21300000, guid: 98016502d7e46614dbe037decf13929d,
+    type: 3}
 --- !u!198 &198753565981225848
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -2727,7 +2731,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1218156061
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 67299f70b1e56e94990533fead0eff65, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

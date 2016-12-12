@@ -70,7 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52cc42182a9fcb248b521903fe2a1030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rocket: {fileID: 1459077257597246, guid: 09dc683ff34da3946a8b94be53b1ad9c, type: 2}
+  RocketPrefab: {fileID: 114206273895574494, guid: 09dc683ff34da3946a8b94be53b1ad9c,
+    type: 2}
 --- !u!212 &212589430248372302
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject Rocket;
+    public Rocket RocketPrefab;
     public Vector2 getOrientation()
     {
         return _orientation;
@@ -38,7 +38,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Movement();
+        if (!_animator.GetBool("Is Shooting"))
+            Movement();
 
         Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
         if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile.Type == TileType.Empty)
@@ -60,16 +61,16 @@ public class PlayerController : MonoBehaviour
         if (_shootCooldown > 0)
         {
             _shootCooldown -= Time.deltaTime;
-            //if (_shootCooldown < 0.5f)
+            if (_shootCooldown < 0.7f)
                 _animator.SetBool("Is Shooting", false);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow))
             Shoot(Vector2.left);
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow))
             Shoot(Vector2.right);
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKey(KeyCode.UpArrow))
             Shoot(Vector2.up);
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow))
             Shoot(Vector2.down);
     }
 
@@ -135,7 +136,8 @@ public class PlayerController : MonoBehaviour
 
     void Shoot(Vector2 direction)
     {
-        Instantiate(Rocket, transform.position, Quaternion.LookRotation(transform.forward, direction));
+        Rocket rocket = Instantiate(RocketPrefab, transform.position, Quaternion.identity);
+        rocket.ShootDirection = direction;
         _shootCooldown = 1;
         _animator.SetBool("Is Shooting", true);
     }

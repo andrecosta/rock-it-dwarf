@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
+    [Header("Explosion")]
     public AudioClip ExplosionSound;
     public GameObject ExplosionEffect;
+
+    [Header("Shell")]
+    public Sprite ShellSpriteHorizontal;
+    public Sprite ShellSpriteVertical;
+
+    public Vector3 ShootDirection;
 
     private SpriteRenderer _sr;
     private ParticleSystem _ps;
@@ -15,14 +22,25 @@ public class Rocket : MonoBehaviour
         _sr = GetComponent<SpriteRenderer>();
         _ps = GetComponent<ParticleSystem>();
         transform.position = new Vector3(Mathf.Round(transform.position.x*10)/10, Mathf.Round(transform.position.y*10)/10);
+        print(ShootDirection);
+        if (Mathf.Abs(ShootDirection.x) > Mathf.Abs(ShootDirection.y))
+        {
+            _sr.sprite = ShellSpriteHorizontal;
+            _sr.flipX = ShootDirection.x < 0;
+        }
+        else
+        {
+            _sr.sprite = ShellSpriteVertical;
+            _sr.flipY = ShootDirection.y > 0;
+        }
     }
 
     void Update()
     {
         if (!_sr.enabled)
             return;
-
-        transform.position += transform.up * Time.deltaTime * 6;
+        
+        transform.position += ShootDirection * Time.deltaTime * 6;
 
         Tile tile = GameController.Instance.GetTileAt(transform.position.x, transform.position.y);
         if (tile != null && tile.Type == TileType.Empty)
