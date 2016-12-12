@@ -54,7 +54,6 @@ public class Rocket : MonoBehaviour
                 neighbor.Type = TileType.Wall;
 
             StartCoroutine(Extinguish());
-        Instantiate(ExplosionEffect, transform.position, Quaternion.identity);
         }
         else if (tile == null)
             StartCoroutine(Extinguish());
@@ -64,6 +63,7 @@ public class Rocket : MonoBehaviour
     {
         _ps.Stop();
         _sr.enabled = false;
+        Destroy(Instantiate(ExplosionEffect, transform.position, Quaternion.identity), 1);
         Camera.main.GetComponent<CameraShake>().ShakeCamera(0.5f, Time.deltaTime);
         AudioSource.PlayClipAtPoint(ExplosionSound, transform.position);
 
