@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private float _digTimer;
     private float _shootCooldown;
     private float _lastHorizontalOrientation;
+    private float _lastVerticalOrientation;
     private Animator _animator;
 
     void Start()
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
         if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile != null && tile.Type == TileType.Empty)
         {
             _digTimer -= Time.deltaTime;
+            _animator.SetBool("Is Moving", false);
             _animator.SetBool("Is Mining", true);
             if (_digTimer <= 0)
             {
@@ -101,17 +103,23 @@ public class PlayerController : MonoBehaviour
         if (h == 0 && v == 0)
         {
             _animator.SetBool("Is Moving", false);
+            _animator.SetFloat("Speed", 0);
             return;
         }
-
-        _animator.SetBool("Is Moving", true);
 
         // Store the player's orientation for future use (limiting to only one axis at a time)
         _orientation = new Vector2(h, v);
         if (h != 0)
             _lastHorizontalOrientation = _orientation.x;
+        if (v != 0)
+            _lastVerticalOrientation = _orientation.y;
         if (Mathf.Abs(h) > 0)
             _orientation.y = 0;
+
+        _animator.SetBool("Is Moving", true);
+        _animator.SetFloat("Horizontal Velocity", Mathf.Abs(_orientation.x));
+        _animator.SetFloat("Vertical Velocity", _orientation.y);
+        _animator.SetFloat("Speed", _orientation.magnitude);
 
         if (_lastHorizontalOrientation < 0)
             transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -145,6 +153,7 @@ public class PlayerController : MonoBehaviour
         rocket.ShootDirection = direction;
         rocket.shotByPlayer = true;
         _shootCooldown = 1;
+        _animator.SetBool("Is Moving", false);
         _animator.SetBool("Is Shooting", true);
     }
 }
