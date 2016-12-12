@@ -56,6 +56,6 @@ MonoBehaviour:
   mapRoomAmmount: 1
   mapRandomness: 0.2
   mapEmptyArea: 0.1
-  player: {fileID: 0}
+  player: {fileID: 1307935676478820, guid: 8e8f4d8e331a8594aa7c992be2fcae96, type: 2}
   enemy: {fileID: 1839030531504768, guid: 3c229a6636622be44a33612bb9b0547f, type: 2}
   enemyAmmount: 5

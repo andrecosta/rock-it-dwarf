@@ -360,16 +360,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114983262354729614, guid: 748a6b8f94091294db156c6700ef30a9,
-        type: 2}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 2118846463}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 748a6b8f94091294db156c6700ef30a9, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &2118846463 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1307935676478820, guid: 8e8f4d8e331a8594aa7c992be2fcae96,
-    type: 2}
-  m_PrefabInternal: {fileID: 368218029}

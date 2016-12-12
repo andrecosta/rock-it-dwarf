@@ -54,7 +54,7 @@ public class CaveCollapser : MonoBehaviour
 
     void Collapse()
     {
-        Tile[] openTiles = GameController.Instance.FloorTiles.Cast<Tile>().Where(t => t.Type == TileType.Wall).ToArray();
+        Tile[] openTiles = GameController.Instance.TerrainTiles.Cast<Tile>().Where(t => t.Type == TileType.Terrain).ToArray();
         if (openTiles.Length == 0)
         {
             Debug.Log("No open tiles left!");
@@ -72,12 +72,13 @@ public class CaveCollapser : MonoBehaviour
             }
         }
 
+        // Generate a small amount of lava tiles
         openTiles =
             GameController.Instance.LavaTiles.Cast<Tile>()
                 .Where(
                     t =>
                         t.Type == TileType.Empty &&
-                        GameController.Instance.GetWallTileAt(t.X, t.Y).Type == TileType.Wall)
+                        GameController.Instance.GetTileAt(t.X, t.Y).Type == TileType.Terrain)
                 .ToArray();
         if (openTiles.Length == 0)
         {
@@ -106,8 +107,8 @@ public class CaveCollapser : MonoBehaviour
                     if (Mathf.Abs(x) + Mathf.Abs(y) > 1)
                         continue;
 
-                    Tile tile = GameController.Instance.GetWallTileAt(lavaTile.X + x, lavaTile.Y + y);
-                    if (tile != null && tile.Type == TileType.Wall)
+                    Tile tile = GameController.Instance.GetTileAt(lavaTile.X + x, lavaTile.Y + y);
+                    if (tile != null && tile.Type == TileType.Terrain)
                     {
                         GameController.Instance.GetLavaTileAt(tile.X, tile.Y).Type = TileType.Lava;
                     }

@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75089235c1da76440b218e47cd982148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TilesetName: FullBrown
+  TerrainTilesetName: FullBrown
   LavaTilesetName: FullBrown_Lava
   TilesetSize: {x: 224, y: 224}
+  ShadowSprite: {fileID: 21300000, guid: 434055578ea05b84e907a167b16d1b7d, type: 3}

@@ -24,34 +24,34 @@ public class Rocket : MonoBehaviour
 
         transform.position += transform.up * Time.deltaTime * 4;
 
-        Tile tile = GameController.Instance.GetWallTileAt(transform.position.x, transform.position.y);
+        Tile tile = GameController.Instance.GetTileAt(transform.position.x, transform.position.y);
         if (tile != null && tile.Type == TileType.Empty)
         {
-            tile.Type = TileType.Wall;
-            Tile neighbor = GameController.Instance.GetWallTileAt(tile.X + 1, tile.Y);
-            if (neighbor != null && neighbor.Type != TileType.Wall)
-                neighbor.Type = TileType.Wall;
-            neighbor = GameController.Instance.GetWallTileAt(tile.X - 1, tile.Y);
-            if (neighbor != null && neighbor.Type != TileType.Wall)
-                neighbor.Type = TileType.Wall;
-            neighbor = GameController.Instance.GetWallTileAt(tile.X, tile.Y + 1);
-            if (neighbor != null && neighbor.Type != TileType.Wall)
-                neighbor.Type = TileType.Wall;
-            neighbor = GameController.Instance.GetWallTileAt(tile.X, tile.Y - 1);
-            if (neighbor != null && neighbor.Type != TileType.Wall)
-                neighbor.Type = TileType.Wall;
-            neighbor = GameController.Instance.GetWallTileAt(tile.X + 1, tile.Y + 1);
-            if (neighbor != null && neighbor.Type != TileType.Wall)
-                neighbor.Type = TileType.Wall;
-            neighbor = GameController.Instance.GetWallTileAt(tile.X - 1, tile.Y - 1);
-            if (neighbor != null && neighbor.Type != TileType.Wall)
-                neighbor.Type = TileType.Wall;
-            neighbor = GameController.Instance.GetWallTileAt(tile.X + 1, tile.Y - 1);
-            if (neighbor != null && neighbor.Type != TileType.Wall)
-                neighbor.Type = TileType.Wall;
-            neighbor = GameController.Instance.GetWallTileAt(tile.X - 1, tile.Y + 1);
-            if (neighbor != null && neighbor.Type != TileType.Wall)
-                neighbor.Type = TileType.Wall;
+            tile.Type = TileType.Terrain;
+            Tile neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y);
+            if (neighbor != null && neighbor.Type != TileType.Terrain)
+                neighbor.Type = TileType.Terrain;
+            neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y);
+            if (neighbor != null && neighbor.Type != TileType.Terrain)
+                neighbor.Type = TileType.Terrain;
+            neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y + 1);
+            if (neighbor != null && neighbor.Type != TileType.Terrain)
+                neighbor.Type = TileType.Terrain;
+            neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y - 1);
+            if (neighbor != null && neighbor.Type != TileType.Terrain)
+                neighbor.Type = TileType.Terrain;
+            neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y + 1);
+            if (neighbor != null && neighbor.Type != TileType.Terrain)
+                neighbor.Type = TileType.Terrain;
+            neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y - 1);
+            if (neighbor != null && neighbor.Type != TileType.Terrain)
+                neighbor.Type = TileType.Terrain;
+            neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y - 1);
+            if (neighbor != null && neighbor.Type != TileType.Terrain)
+                neighbor.Type = TileType.Terrain;
+            neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y + 1);
+            if (neighbor != null && neighbor.Type != TileType.Terrain)
+                neighbor.Type = TileType.Terrain;
 
             StartCoroutine(Extinguish());
         }

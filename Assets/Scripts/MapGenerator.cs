@@ -8,8 +8,7 @@ public class MapGenerator {
     //Private Variables
     private int _mapSize, _tunnelAmmount, _roomAmmount, _enemyAmmount;
     private float _mapRandomness, _emptyArea;
-    private Tile[,] _floorTiles;
-    private Tile[,] _wallTiles;
+    private Tile[,] _terrainTiles, _lavaTiles;
     private List<Tile> _emptyTiles;
     private GameObject _enemyPrefab;
    
@@ -25,48 +24,41 @@ public class MapGenerator {
 
         _generateTiles(_mapSize);
         _generateSpace();
-        
-
     }
 
-    public Tile[,] getBackgroundTiles() { return _floorTiles; }
-    public Tile[,] getFloorTiles() { return _wallTiles; }
+    public Tile[,] getTerrainTiles() { return _terrainTiles; }
+    public Tile[,] getLavaTiles() { return _lavaTiles; }
 
     private void _generateTiles(int size)
     {
-        // Generate floor tiles
-        _floorTiles = new Tile[size, size];
+        // Generate the terrain tiles
+        _terrainTiles = new Tile[size, size];
         for (int x = 0; x < size; x++)
         {
             for (int y = 0; y < size; y++)
             {
                 Tile t = new Tile(x, y);
-                t.Type = TileType.Floor;
-                t.CallbackTileChanged += GameController.Instance.OnTileChanged;
-                _floorTiles[x, y] = t;
-            }
-        }
-
-        // Generate the wall tiles
-        _wallTiles = new Tile[size, size];
-        for (int x = 0; x < (size); x++)
-        {
-            for (int y = 0; y < (size); y++)
-            {
-                Tile t = new Tile(x, y);
 
                 // Check start area
                 if ((x < 2 && y < 2) || (x < 2 && y > (size - 3)) || (x > (size - 3) && y < 2) || (x > (size - 3) && y > (size - 3)))
-                    t.Type = TileType.Wall;
-                else
-                    t.Type = TileType.Empty;
+                    t.Type = TileType.Terrain;
 
                 t.CallbackTileChanged += GameController.Instance.OnTileChanged;
-                _wallTiles[x, y] = t;
+                _terrainTiles[x, y] = t;
             }
         }
 
-
+        // Generate lava tiles
+        _lavaTiles = new Tile[size, size];
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                Tile t = new Tile(x, y);
+                t.CallbackTileChanged += GameController.Instance.OnTileChanged;
+                _lavaTiles[x, y] = t;
+            }
+        }
     }
 
     private void _generateSpace()
@@ -129,7 +121,7 @@ public class MapGenerator {
 
             //Getting the starting tile
             Tile startTile = _getTile();
-            startTile.Type = TileType.Wall;
+            startTile.Type = TileType.Terrain;
             _emptyTiles.Add(startTile);
             Tile currTile = startTile;
             currArea++;
@@ -144,8 +136,8 @@ public class MapGenerator {
                 {
                     tileTrials = 0;
                     firstTrials = 0;
-                    currTile = _wallTiles[tileX, tileY];
-                    currTile.Type = TileType.Wall;
+                    currTile = _terrainTiles[tileX, tileY];
+                    currTile.Type = TileType.Terrain;
                     _emptyTiles.Add(currTile);
                     corridorSize++;
                     currArea++;
@@ -211,8 +203,8 @@ public class MapGenerator {
                     {
                         roomSize++;
                         currArea++;
-                        _wallTiles[i + startX, j + startY].Type = TileType.Wall;
-                        Tile currTile = _wallTiles[i + startX, j + startY];
+                        _terrainTiles[i + startX, j + startY].Type = TileType.Terrain;
+                        Tile currTile = _terrainTiles[i + startX, j + startY];
                         _emptyTiles.Add(currTile);
                     }
                 }
@@ -229,7 +221,7 @@ public class MapGenerator {
         newTile = _getTile();
         //Debug.Log("CurrArea: " + currArea + " Target: " + _emptyArea * _mapSize * _mapSize);
         //Setting to empty
-        newTile.Type = TileType.Wall;
+        newTile.Type = TileType.Terrain;
         _emptyTiles.Add(newTile);
         currArea += 1;
     }
@@ -251,10 +243,10 @@ public class MapGenerator {
                 continue;
 
             //Checking if the tile is already empty
-            if (_wallTiles[x, y].Type == TileType.Wall)
+            if (_terrainTiles[x, y].Type == TileType.Terrain)
                 continue;
 
-            currTile = _wallTiles[x, y];
+            currTile = _terrainTiles[x, y];
         }
         return currTile;
     }
@@ -285,12 +277,12 @@ public class MapGenerator {
 
     private bool checkTile(int x, int y)
     {
-        Tile currTile = _wallTiles[x, y];
+        Tile currTile = _terrainTiles[x, y];
 
         if ((x < 3 && y < 3) || (x < 3 && y > (_mapSize - 4)) || (x > (_mapSize - 4) && y < 3) || (x > (_mapSize - 4) && y > (_mapSize - 4)))
             return false;
 
-        if (_wallTiles[x, y].Type == TileType.Wall)
+        if (_terrainTiles[x, y].Type == TileType.Terrain)
             return false;
 
         return true;

@@ -6,8 +6,7 @@ using UnityEngine;
 public enum TileType
 {
     Empty,
-    Wall,
-    Floor,
+    Terrain,
     Lava
 }
 

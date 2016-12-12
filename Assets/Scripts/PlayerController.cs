@@ -24,9 +24,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        foreach (var tile in GameController.Instance.FloorTiles)
+        foreach (var tile in GameController.Instance.TerrainTiles)
         {
-            if (tile.Type == TileType.Wall)
+            if (tile.Type == TileType.Terrain)
             {
                 _currentTile = tile;
                 _targetTile = _currentTile;
@@ -105,8 +105,8 @@ public class PlayerController : MonoBehaviour
             _orientation.y = 0;
 
         // Get the new target tile based on the player's intention of movement
-        Tile tile = GameController.Instance.GetWallTileAt(transform.position.x + _orientation.x, transform.position.y + _orientation.y);
-        if (tile != null && tile.Type == TileType.Wall)
+        Tile tile = GameController.Instance.GetTileAt(transform.position.x + _orientation.x, transform.position.y + _orientation.y);
+        if (tile != null && tile.Type == TileType.Terrain)
             _targetTile = tile;
     }
 
@@ -115,9 +115,9 @@ public class PlayerController : MonoBehaviour
         if (_currentTile != _targetTile)
             return;
 
-        Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
+        Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
         if (tile != null && tile.Type == TileType.Empty)
-            GameController.Instance.GetWallTileAt(tile.X, tile.Y).Type = TileType.Wall;
+            GameController.Instance.GetTileAt(tile.X, tile.Y).Type = TileType.Terrain;
     }
 
     void Shoot(Vector2 direction)

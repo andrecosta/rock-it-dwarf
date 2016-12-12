@@ -67,7 +67,7 @@ public class AIController : MonoBehaviour {
         {
             switch (_targetTile.Type)
             {
-                case TileType.Wall:
+                case TileType.Terrain:
                     _groundType = 2;
                     break;
                 case TileType.Empty:
@@ -131,7 +131,7 @@ public class AIController : MonoBehaviour {
             direction = _orientation;
 
         // Get the new target tile based on the player's intention of movement
-        Tile tile = GameController.Instance.GetWallTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
+        Tile tile = GameController.Instance.GetTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
         if (tile != null)
             _targetTile = tile;
 
@@ -156,7 +156,7 @@ public class AIController : MonoBehaviour {
             direction = new Vector2(Mathf.Sign(xToPlayer), 0);
         _orientation = direction;
 
-        Tile tile = GameController.Instance.GetWallTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
+        Tile tile = GameController.Instance.GetTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
         if (tile != null)
             _targetTile = tile;
     }
@@ -202,9 +202,9 @@ public class AIController : MonoBehaviour {
         if (_currentTile == _targetTile)
             return;
 
-        Tile tile = GameController.Instance.GetWallTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
+        Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
         if (tile != null && tile.Type == TileType.Empty)
-            GameController.Instance.GetWallTileAt(tile.X, tile.Y).Type = TileType.Wall;
+            GameController.Instance.GetTileAt(tile.X, tile.Y).Type = TileType.Terrain;
     }
 
     /*
