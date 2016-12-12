@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: a4b182f9ca9f9f046946b36016316958
-timeCreated: 1481428382
+timeCreated: 1481518115
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,14 @@ TextureImporter:
     21300010: LittleDwarf_5
     21300012: LittleDwarf_6
     21300014: LittleDwarf_7
+    21300016: DwarfWalking_0
+    21300018: DwarfWalking_1
+    21300020: DwarfWalking_2
+    21300022: DwarfWalking_3
+    21300024: DwarfWalking_4
+    21300026: DwarfWalking_5
+    21300028: DwarfWalking_6
+    21300030: DwarfWalking_7
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -94,7 +102,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LittleDwarf_0
+      name: DwarfWalking_0
       rect:
         serializedVersion: 2
         x: 0
@@ -107,7 +115,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: LittleDwarf_1
+      name: DwarfWalking_1
       rect:
         serializedVersion: 2
         x: 16
@@ -120,7 +128,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: LittleDwarf_2
+      name: DwarfWalking_2
       rect:
         serializedVersion: 2
         x: 32
@@ -133,7 +141,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: LittleDwarf_3
+      name: DwarfWalking_3
       rect:
         serializedVersion: 2
         x: 48
@@ -146,7 +154,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: LittleDwarf_4
+      name: DwarfWalking_4
       rect:
         serializedVersion: 2
         x: 64
@@ -159,7 +167,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: LittleDwarf_5
+      name: DwarfWalking_5
       rect:
         serializedVersion: 2
         x: 80
@@ -172,7 +180,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: LittleDwarf_6
+      name: DwarfWalking_6
       rect:
         serializedVersion: 2
         x: 96
@@ -185,7 +193,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: LittleDwarf_7
+      name: DwarfWalking_7
       rect:
         serializedVersion: 2
         x: 112

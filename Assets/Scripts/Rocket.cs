@@ -22,7 +22,7 @@ public class Rocket : MonoBehaviour
         if (!_sr.enabled)
             return;
 
-        transform.position += transform.up * Time.deltaTime * 4;
+        transform.position += transform.up * Time.deltaTime * 6;
 
         Tile tile = GameController.Instance.GetTileAt(transform.position.x, transform.position.y);
         if (tile != null && tile.Type == TileType.Empty)
