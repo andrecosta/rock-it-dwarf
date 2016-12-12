@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
             Movement();
 
         Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
-        if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile.Type == TileType.Empty)
+        if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile != null && tile.Type == TileType.Empty)
         {
             _digTimer -= Time.deltaTime;
             _animator.SetBool("Is Mining", true);
@@ -136,6 +136,11 @@ public class PlayerController : MonoBehaviour
 
     void Shoot(Vector2 direction)
     {
+        if (direction.x < 0)
+            transform.localEulerAngles = new Vector3(0, 180, 0);
+        else
+            transform.localEulerAngles = Vector3.zero;
+
         Rocket rocket = Instantiate(RocketPrefab, transform.position, Quaternion.identity);
         rocket.ShootDirection = direction;
         _shootCooldown = 1;
