@@ -16,8 +16,10 @@ public class PlayerController : MonoBehaviour
     private Vector2 _orientation;
     private Sprite[] _walkingAnimation;
     private Sprite[] _miningAnimation;
+    private Sprite[] _shootingAnimation;
     private float _animationTimer;
     private int _animationFrame;
+    private int _s_animationFrame;
     private SpriteRenderer _sr;
     private float _digTimer;
     private float _shootCooldown;
@@ -39,12 +41,26 @@ public class PlayerController : MonoBehaviour
         // Load animation
         _walkingAnimation = Resources.LoadAll<Sprite>("Sprites/DwarfWalking");
         _miningAnimation = Resources.LoadAll<Sprite>("Sprites/DwarfMining");
+        _shootingAnimation = Resources.LoadAll<Sprite>("Sprites/DwarfShooting");
         _sr = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-        Movement();
+        if (_shootCooldown > 0)
+        {
+            _shootCooldown -= Time.deltaTime;
+            if (!ShootingAnimation())
+            {
+                Movement();
+                Animation();
+            }
+        }
+        else
+        {
+            Movement();
+            Animation();
+        }
 
         Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
         if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile.Type == TileType.Empty)
@@ -63,17 +79,21 @@ public class PlayerController : MonoBehaviour
             _digTimer = 1;
 
             if (_shootCooldown > 0)
-                _shootCooldown -= Time.deltaTime;
-            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
                 Shoot(Vector2.left);
-            else if (Input.GetKey(KeyCode.RightArrow))
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
                 Shoot(Vector2.right);
-            else if (Input.GetKey(KeyCode.UpArrow))
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
                 Shoot(Vector2.up);
-            else if (Input.GetKey(KeyCode.DownArrow))
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
                 Shoot(Vector2.down);
-
-            Animation();
+            else
+            {
+                //Movement();
+                //Animation();
+            }
         }
     }
 
@@ -129,6 +149,8 @@ public class PlayerController : MonoBehaviour
 
     void Shoot(Vector2 direction)
     {
+        _s_animationFrame = 0;
+        _animationTimer = 0;
         Instantiate(Rocket, transform.position, Quaternion.LookRotation(transform.forward, direction));
         _shootCooldown = 1;
     }
@@ -167,5 +189,23 @@ public class PlayerController : MonoBehaviour
 
         _sr.flipX = _lastHorizontalOrientation < 0;
         _sr.sprite = _miningAnimation[_animationFrame];
+    }
+
+    bool ShootingAnimation()
+    {
+        if (_animationTimer <= 0)
+        {
+            _animationTimer = 0.05f;
+            _s_animationFrame++;
+        }
+        else
+            _animationTimer -= Time.deltaTime;
+
+        if (_s_animationFrame >= _shootingAnimation.Length)
+            return false;
+
+        _sr.flipX = _lastHorizontalOrientation < 0;
+        _sr.sprite = _shootingAnimation[_s_animationFrame];
+        return true;
     }
 }
