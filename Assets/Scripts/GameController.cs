@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
     public GameObject player;
     public Tile[,] FloorTiles;
     public Tile[,] WallTiles;
+    public Tile[,] LavaTiles;
     public List<Tile> emptyTiles;
 
     public Action<Tile> CallbackTileChanged { get; set; }
@@ -35,6 +36,19 @@ public class GameController : MonoBehaviour
         FloorTiles = _map.getFloors();
         WallTiles = _map.getWalls();
         emptyTiles = _map.getEmptyTiles();
+
+        // Generate lava tiles
+        LavaTiles = new Tile[mapSize, mapSize];
+        for (int x = 0; x < mapSize; x++)
+        {
+            for (int y = 0; y < mapSize; y++)
+            {
+                Tile t = new Tile(x, y);
+                t.Type = TileType.Empty;
+                t.CallbackTileChanged += OnTileChanged;
+                LavaTiles[x, y] = t;
+            }
+        }
 
         instantiateEnemies();
     }
@@ -60,14 +74,27 @@ public class GameController : MonoBehaviour
         return WallTiles[x, y];
     }
 
+    public Tile GetLavaTileAt(int x, int y)
+    {
+        if (x >= mapSize || x < 0 || y >= mapSize || y < 0)
+            return null;
+
+        return LavaTiles[x, y];
+    }
+
     public Tile GetTileAt(float x, float y)
     {
-        return GetTileAt((int) Mathf.Round(x), (int) Math.Round(y));
+        return GetTileAt((int)Mathf.Round(x), (int)Math.Round(y));
     }
 
     public Tile GetWallTileAt(float x, float y)
     {
-        return GetWallTileAt((int) Mathf.Round(x), (int) Math.Round(y));
+        return GetWallTileAt((int)Mathf.Round(x), (int)Math.Round(y));
+    }
+
+    public Tile GetLavaTileAt(float x, float y)
+    {
+        return GetLavaTileAt((int)Mathf.Round(x), (int)Math.Round(y));
     }
 
     public void OnTileChanged(Tile tile)

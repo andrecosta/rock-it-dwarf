@@ -65,6 +65,8 @@ public class MapGenerator {
                 _wallTiles[x, y] = t;
             }
         }
+
+
     }
 
     private void _generateSpace()

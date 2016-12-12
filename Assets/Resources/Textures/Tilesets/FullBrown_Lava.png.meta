@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 396f61f1a1b9e7b49b32fae9287abbfc
-timeCreated: 1481414995
+guid: f535ae554ca294041874c79ecb5a5cc0
+timeCreated: 1481494525
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -27,7 +27,7 @@ TextureImporter:
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -1
     wrapMode: 1
@@ -44,7 +44,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 0
   textureShape: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
@@ -53,7 +53,31 @@ TextureImporter:
   - buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0

@@ -47,6 +47,9 @@ TagManager:
   - name: Walls
     uniqueID: 1083228443
     locked: 0
+  - name: Lava
+    uniqueID: 2849627261
+    locked: 0
   - name: Characters
     uniqueID: 1218156061
     locked: 0
