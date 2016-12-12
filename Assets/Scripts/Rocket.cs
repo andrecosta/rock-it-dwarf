@@ -13,6 +13,7 @@ public class Rocket : MonoBehaviour
     {
         _sr = GetComponent<SpriteRenderer>();
         _ps = GetComponent<ParticleSystem>();
+        transform.position = new Vector3(Mathf.Round(transform.position.x*10)/10, Mathf.Round(transform.position.y*10)/10);
     }
 
     void Update()
@@ -62,7 +63,7 @@ public class Rocket : MonoBehaviour
     {
         _ps.Stop();
         _sr.enabled = false;
-        Camera.main.GetComponent<CameraShake>().ShakeCamera(0.5f, 1);
+        Camera.main.GetComponent<CameraShake>().ShakeCamera(0.5f, Time.deltaTime);
         AudioSource.PlayClipAtPoint(ExplosionSound, transform.position);
 
         while (_ps.isPlaying)

@@ -58,11 +58,14 @@ public class PlayerController : MonoBehaviour
 
         if (_shootCooldown > 0)
             _shootCooldown -= Time.deltaTime;
-        else if (Input.GetKey(KeyCode.LeftControl))
-        {
-            Shoot();
-            _shootCooldown = 1;
-        }
+        else if (Input.GetKey(KeyCode.LeftArrow))
+            Shoot(Vector2.left);
+        else if (Input.GetKey(KeyCode.RightArrow))
+            Shoot(Vector2.right);
+        else if (Input.GetKey(KeyCode.UpArrow))
+            Shoot(Vector2.up);
+        else if (Input.GetKey(KeyCode.DownArrow))
+            Shoot(Vector2.down);
 
         Animation();
     }
@@ -117,9 +120,10 @@ public class PlayerController : MonoBehaviour
             GameController.Instance.GetWallTileAt(tile.X, tile.Y).Type = TileType.Wall;
     }
 
-    void Shoot()
+    void Shoot(Vector2 direction)
     {
-        Instantiate(Rocket, transform.position, Quaternion.LookRotation(transform.forward, _orientation));
+        Instantiate(Rocket, transform.position, Quaternion.LookRotation(transform.forward, direction));
+        _shootCooldown = 1;
     }
 
     void Animation()
