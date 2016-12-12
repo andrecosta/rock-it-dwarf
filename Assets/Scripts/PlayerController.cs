@@ -144,10 +144,15 @@ public class PlayerController : MonoBehaviour
 
     void Shoot(Vector2 direction)
     {
+        _animator.SetFloat("Vertical Velocity", direction.y);
         if (direction.x < 0)
+        {
             transform.localEulerAngles = new Vector3(0, 180, 0);
+        }
         else
+        {
             transform.localEulerAngles = Vector3.zero;
+        }
 
         Rocket rocket = Instantiate(RocketPrefab, transform.position, Quaternion.identity);
         rocket.ShootDirection = direction;
