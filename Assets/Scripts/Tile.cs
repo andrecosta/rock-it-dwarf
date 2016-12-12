@@ -7,7 +7,8 @@ public enum TileType
 {
     Empty,
     Terrain,
-    Lava
+    Lava,
+    NoLava,
 }
 
 public class Tile

@@ -56,6 +56,7 @@ public class MapGenerator {
             {
                 Tile t = new Tile(x, y);
                 t.CallbackTileChanged += GameController.Instance.OnTileChanged;
+                t.Type = TileType.NoLava;
                 _lavaTiles[x, y] = t;
             }
         }

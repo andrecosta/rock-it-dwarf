@@ -92,6 +92,7 @@ public class TileSpriteController : MonoBehaviour
             shadowGo.transform.localPosition = tile.Position;
             sr = shadowGo.AddComponent<SpriteRenderer>();
             sr.sortingLayerName = "LOS";
+            sr.enabled = false;
             sr.sprite = ShadowSprite;
             //sr.color = new Color32(41, 26, 14, 0);
             sr.color = Color.black;
@@ -162,9 +163,12 @@ public class TileSpriteController : MonoBehaviour
                 sr.sprite = GetSpriteFromTileset(tile, ref _lavaSprites);
                 sr.color = Color.white;
                 break;
-            default:
+            case TileType.Empty:
                 sr.sprite = ShadowSprite;
                 sr.color = new Color32(41, 26, 14, 255);
+                break;
+            default:
+                sr.sprite = null;
                 break;
         }
 
