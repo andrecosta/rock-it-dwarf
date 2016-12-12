@@ -10,6 +10,7 @@ public class MapGenerator {
     private float _mapRandomness, _emptyArea;
     private Tile[,] _terrainTiles, _lavaTiles;
     private List<Tile> _emptyTiles;
+    public List<Tile> goalTiles;
     private GameObject _enemyPrefab;
    
 
@@ -184,6 +185,7 @@ public class MapGenerator {
 
         while (roomAmmount < _roomAmmount)
         {
+            int roomNumber = 1;
             int roomSize = 1;
             int targetRoomSize = averageRoomSize + (int)((Random.Range(-1f, 1f) * averageRoomSize) / 2);
             int averageHeight = (int)(Mathf.Sqrt(targetRoomSize) + 0.5f);
@@ -207,9 +209,12 @@ public class MapGenerator {
                         _terrainTiles[i + startX, j + startY].Type = TileType.Terrain;
                         Tile currTile = _terrainTiles[i + startX, j + startY];
                         _emptyTiles.Add(currTile);
+                        if (roomNumber == 1)
+                            goalTiles.Add(currTile);
                     }
                 }
             }
+            roomNumber++;
             roomAmmount++;
         }
     }

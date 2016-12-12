@@ -22,12 +22,7 @@ public class Arrow : MonoBehaviour {
         if (tile != null && tile.Type == TileType.Empty)
         {
             _shootDirection = Vector3.zero;
-            despawnTime -= Time.deltaTime;
-
-            if (despawnTime == 0)
-            {
-                Destroy(this.gameObject);
-            }
+            Destroy(gameObject, 5);
         }
     }
 }
