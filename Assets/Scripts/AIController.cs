@@ -8,9 +8,10 @@ public class AIController : MonoBehaviour {
     public int type;
     public bool hardMode = false;
     public Rocket rocketPrefab;
+    public Arrow arrowPrefab;
 
     private Tile _currentTile;
-    private float _shootCooldown = 2;
+    private float _shootCooldown = 1.5f;
     private GameController _gameController;
     private Tile _targetTile;
     private float _moveTimer;
@@ -163,7 +164,7 @@ public class AIController : MonoBehaviour {
         else if (type == 1)
             shoot_bazooka(xToPlayer, yToPlayer);
         else if (type == 3)
-            shoot_arrow(xToPlayer, yToPlayer);
+            arrowMonster_behaviour(xToPlayer, yToPlayer);
         return;
 
     }
@@ -237,19 +238,35 @@ public class AIController : MonoBehaviour {
             return;
         }
 
-        if (Mathf.Abs(yToPlayer) > Mathf.Abs(xToPlayer)) 
+        if (Mathf.Abs(yToPlayer) > Mathf.Abs(xToPlayer))
             Shoot(new Vector2(0, Mathf.Sign(yToPlayer)));
         else
             Shoot(new Vector2(Mathf.Sign(xToPlayer), 0));
 
-        //getting the most critical direction
-
-
-
     }
 
-    private void shoot_arrow(float xToPlayer, float yToPlayer)
+    private void arrowMonster_behaviour(float xToPlayer, float yToPlayer)
     {
+        Vector2 direction;
+        Tile targetTile;
+        Tile tile;
+
+        if (!checkWalls())
+        {
+            chase( xToPlayer, yToPlayer);
+            return;
+        }
+        else
+        {
+            targetTile = GameController.Instance.GetTileAt(_player.transform.position.x, _player.transform.position.y);
+        }
+
+        if (_shootCooldown > 0)
+        {
+            _shootCooldown -= Time.deltaTime;
+            return;
+        }
+        shoot_arrow(targetTile);
 
     }
 
@@ -309,7 +326,17 @@ public class AIController : MonoBehaviour {
 
         Rocket rocket = Instantiate(rocketPrefab, transform.position, Quaternion.LookRotation(transform.forward, projectileDirection));
         rocket.ShootDirection = projectileDirection;
-        _shootCooldown = 1;
+        _shootCooldown = 1.5f;
+    }
+
+    void shoot_arrow(Tile target)
+    {
+        if (_currentTile != _targetTile)
+            return;
+
+        Arrow arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
+        arrow.targetTile = target;
+        _shootCooldown = 1.5f;
     }
 
     /*
