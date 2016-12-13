@@ -54,18 +54,18 @@ public class Rocket : MonoBehaviour
             {
                 if (Vector3.Distance(enemy.transform.position, transform.position) < 0.2f)
                 {
-                    _gc.enemyList.Remove(enemy);
-                    _gc.KillEnemy(enemy);
-                    checkEnemiesinExplosion();
                     areaDamage(tile);
                     StartCoroutine(Extinguish());
+                    checkEnemiesinExplosion();
+                    _gc.enemyList.Remove(enemy);
+                    _gc.KillEnemy(enemy);
                 }
             }
             if ((tile != null && tile.Type == TileType.Empty))
             {
                 areaDamage(tile);
-                checkEnemiesinExplosion();
                 StartCoroutine(Extinguish());
+                checkEnemiesinExplosion();
             }
             else if (tile == null)
                 StartCoroutine(Extinguish());
