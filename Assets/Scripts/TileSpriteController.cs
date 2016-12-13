@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TileSpriteController : MonoBehaviour
 {
@@ -93,7 +94,7 @@ public class TileSpriteController : MonoBehaviour
             shadowGo.transform.localPosition = tile.Position;
             sr = shadowGo.AddComponent<SpriteRenderer>();
             sr.sortingLayerName = "LOS";
-            sr.enabled = false;
+            //sr.enabled = false;
             sr.sprite = ShadowSprite;
             //sr.color = new Color32(41, 26, 14, 0);
             sr.color = Color.black;
@@ -120,6 +121,12 @@ public class TileSpriteController : MonoBehaviour
 
     void Update()
     {
+        if (menu)
+        {
+            if (Input.anyKeyDown)
+                SceneManager.LoadScene("Game");
+        }
+
         _checkedTiles.Clear();
         calculateShadows();
     }

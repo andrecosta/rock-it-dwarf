@@ -144,6 +144,7 @@ public class GameController : MonoBehaviour
     public void PlayerVictory()
     {
         Debug.Log("Victory");
+        StartCoroutine(SlowDown());
         IsGameVictory = true;
     }
 
