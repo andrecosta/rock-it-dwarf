@@ -64,5 +64,11 @@ public class CaveCollapser : MonoBehaviour
 
         // Generate a new lava pool
         FindObjectOfType<LavaController>().GenerateLavaPool();
+        FindObjectOfType<LavaController>().GenerateLavaPool();
+    }
+
+    public void DecreaseCollapseTimer(float amount)
+    {
+        _collapseTimer -= amount;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -35,6 +36,8 @@ public class PlayerController : MonoBehaviour
 
         // Load animation
         _animator = GetComponent<Animator>();
+
+        StartCoroutine(CheckLava());
     }
 
     void Update()
@@ -160,5 +163,16 @@ public class PlayerController : MonoBehaviour
         _shootCooldown = 1;
         _animator.SetBool("Is Moving", false);
         _animator.SetBool("Is Shooting", true);
+    }
+
+    IEnumerator CheckLava()
+    {
+        while (true)
+        {
+            if (GameController.Instance.GetLavaTileAt(_currentTile.X, _currentTile.Y).Type == TileType.Lava)
+               GameController.Instance.PlayerDeath();
+                
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }

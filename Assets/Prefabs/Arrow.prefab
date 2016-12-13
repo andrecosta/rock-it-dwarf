@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4337867709095944}
   - component: {fileID: 114657739741504202}
   - component: {fileID: 212704773683925604}
+  - component: {fileID: 111895896509056858}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -41,6 +42,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!111 &111895896509056858
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1889911266459572}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 9f38a8e836d8f2d4cad913c53ddaf966, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114657739741504202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -83,7 +98,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1218156061
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d6de0ea542be6e04ea17ea748600f6d2, type: 3}
-  m_Color: {r: 0.97794116, g: 0.309202, b: 0.95949334, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

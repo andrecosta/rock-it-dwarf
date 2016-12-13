@@ -19,13 +19,15 @@ public class Rocket : MonoBehaviour
     private List<GameObject> enemiesToClear;
     private ParticleSystem _ps;
     private GameController _gc;
+    private CaveCollapser _caveCollapser;
 
     void Start()
     {
         _gc = GameController.Instance;
         _sr = GetComponent<SpriteRenderer>();
         _ps = GetComponent<ParticleSystem>();
-        transform.position = new Vector3(Mathf.Round(transform.position.x*10)/10, Mathf.Round(transform.position.y*10)/10);
+        _caveCollapser = FindObjectOfType<CaveCollapser>();
+        transform.position = new Vector3(Mathf.Round(transform.position.x * 10) / 10, Mathf.Round(transform.position.y * 10) / 10);
 
         if (Mathf.Abs(ShootDirection.x) > Mathf.Abs(ShootDirection.y))
         {
@@ -43,7 +45,7 @@ public class Rocket : MonoBehaviour
     {
         if (!_sr.enabled)
             return;
-        
+
         transform.position += ShootDirection * Time.deltaTime * 6;
 
         Tile tile = GameController.Instance.GetTileAt(transform.position.x, transform.position.y);
@@ -95,6 +97,7 @@ public class Rocket : MonoBehaviour
         Destroy(Instantiate(ExplosionEffect, transform.position, Quaternion.identity), 1);
         Camera.main.GetComponent<CameraShake>().ShakeCamera(0.5f, Time.deltaTime);
         AudioSource.PlayClipAtPoint(ExplosionSound, transform.position);
+        _caveCollapser.DecreaseCollapseTimer(Random.Range(1, 3));
 
         while (_ps.isPlaying)
             yield return null;
@@ -129,6 +132,11 @@ public class Rocket : MonoBehaviour
         neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y + 1);
         if (neighbor != null && neighbor.Type != TileType.Terrain)
             neighbor.Type = TileType.Terrain;
+
+        if (Vector3.Distance(_gc.player.transform.position, transform.position) < 1f)
+        {
+            _gc.PlayerDeath();
+        }
     }
 
     private void checkEnemiesinExplosion()

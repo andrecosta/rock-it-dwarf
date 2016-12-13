@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
     public List<GameObject> enemyList;
     public Tile goalTile;
 
+    public bool IsGameOver { get; private set; }
+    public bool IsGameVictory { get; private set; }
     public Action<Tile> CallbackTileChanged { get; set; }
     private MapGenerator _map;
     public GameObject[] enemies;
@@ -39,6 +41,7 @@ public class GameController : MonoBehaviour
         }
         Instance = this;
 
+        Time.timeScale = 1;
         _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness);
         TerrainTiles = _map.getTerrainTiles();
         LavaTiles = _map.getLavaTiles();
@@ -133,10 +136,22 @@ public class GameController : MonoBehaviour
     public void PlayerDeath()
     {
         Debug.Log("Dead Player");
+        StartCoroutine(SlowDown());
+        IsGameOver = true;
     }
     public void PlayerVictory()
     {
         Debug.Log("Victory");
+        IsGameVictory = true;
     }
 
+    IEnumerator SlowDown()
+    {
+        while (Time.timeScale > 0)
+        {
+            Camera.main.GetComponent<CameraShake>().ShakeCamera(Time.deltaTime * 0.1f, Time.deltaTime * 0.1f);
+            Time.timeScale -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+    }
 }
