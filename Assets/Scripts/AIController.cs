@@ -10,6 +10,7 @@ public class AIController : MonoBehaviour {
     public Rocket rocketPrefab;
     public Arrow arrowPrefab;
 
+    public bool menu;
     private Tile _currentTile;
     private float _shootCooldown = 1.5f;
     private GameController _gameController;
@@ -139,9 +140,16 @@ public class AIController : MonoBehaviour {
 
         // Get the new target tile based on the player's intention of movement
         Tile tile = GameController.Instance.GetTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
-        if (tile != null)
-            _targetTile = tile;
 
+        if (!menu && tile != null)
+        {
+            _targetTile = tile;
+            return;
+        }
+        if (tile == null || (tile.X < 40 && tile.X > 20) && (tile.Y < 30 && tile.Y > 22))
+            return;
+
+        _targetTile = tile;
     }
     void alerted()
     {

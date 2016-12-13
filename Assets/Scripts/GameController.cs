@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     public static GameController Instance { get; private set; }
 
     //Map Generation Variables
+    public bool menu;
     public int mapSize, mapTunnelAmmount, mapRoomAmmount;
     public float mapRandomness, mapEmptyArea;
     public GameObject player;
@@ -42,7 +43,7 @@ public class GameController : MonoBehaviour
         Instance = this;
 
         Time.timeScale = 1;
-        _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness);
+        _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness, menu);
         TerrainTiles = _map.getTerrainTiles();
         LavaTiles = _map.getLavaTiles();
         EmptyTiles = _map.getEmptyTiles();
@@ -114,6 +115,7 @@ public class GameController : MonoBehaviour
 
             GameObject currEnemy = Instantiate(enemy, new Vector3(startingTile.X, startingTile.Y, 0), Quaternion.identity);
             AIController enemyAI = currEnemy.GetComponent<AIController>();
+            enemyAI.menu = menu;
             enemyAI.setTile(startingTile);
             enemyList.Add(currEnemy);
             existingEnemies++;
