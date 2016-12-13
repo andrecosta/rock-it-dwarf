@@ -11,12 +11,13 @@ public class MapGenerator {
     private Tile[,] _terrainTiles, _lavaTiles;
     private List<Tile> _emptyTiles;
     private GameObject _enemyPrefab;
+    private bool _menu;
 
     public List<Tile> goalTiles;
     public Tile goalTile;
 
 
-    public MapGenerator(int size, int tunels, int rooms, float area, float random)
+    public MapGenerator(int size, int tunels, int rooms, float area, float random, bool menu)
     {
         goalTiles = new List<Tile>();
         _mapSize = size;
@@ -25,6 +26,7 @@ public class MapGenerator {
         _roomAmmount = rooms;
         _emptyArea = area;
         _mapRandomness = random;
+        _menu = menu;
 
         _generateTiles(_mapSize);
         _generateSpace();
@@ -252,6 +254,14 @@ public class MapGenerator {
             if ((x < 3 && y < 3) || (x < 3 && y > (_mapSize - 4)) || (x > (_mapSize - 4) && y < 3) || (x > (_mapSize - 4) && y > (_mapSize - 4)))
                 continue;
 
+            if (_menu)
+            {
+                if ((x < 45 && x > 5) && (y < 30 && y > 20))
+                {
+                    continue;
+                }
+            }
+
             //Checking if the tile is already empty
             if (_terrainTiles[x, y].Type == TileType.Terrain)
                 continue;
@@ -292,6 +302,14 @@ public class MapGenerator {
         if ((x < 3 && y < 3) || (x < 3 && y > (_mapSize - 4)) || (x > (_mapSize - 4) && y < 3) || (x > (_mapSize - 4) && y > (_mapSize - 4)))
             return false;
 
+        if (_menu)
+        {
+            if ((x < 35 && x > 10) && (y < 30 && y > 22))
+            {
+                return false;
+            }
+        }
+
         if (_terrainTiles[x, y].Type == TileType.Terrain)
             return false;
 
@@ -305,6 +323,9 @@ public class MapGenerator {
 
     private void _getGoal()
     {
-        goalTile = goalTiles[Random.Range(0,goalTiles.Count -1)];
+        if (_menu)
+            goalTile = _emptyTiles[1];
+        else
+            goalTile = goalTiles[Random.Range(0,goalTiles.Count -1)];
     }
 }

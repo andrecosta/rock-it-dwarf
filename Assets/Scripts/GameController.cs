@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     public static GameController Instance { get; private set; }
 
     //Map Generation Variables
+    public bool menu;
     public int mapSize, mapTunnelAmmount, mapRoomAmmount;
     public float mapRandomness, mapEmptyArea;
     public GameObject player;
@@ -39,7 +40,7 @@ public class GameController : MonoBehaviour
         }
         Instance = this;
 
-        _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness);
+        _map = new MapGenerator(mapSize, mapTunnelAmmount, mapRoomAmmount, mapEmptyArea, mapRandomness, menu);
         TerrainTiles = _map.getTerrainTiles();
         LavaTiles = _map.getLavaTiles();
         EmptyTiles = _map.getEmptyTiles();

@@ -10,6 +10,7 @@ public class TileSpriteController : MonoBehaviour
     public string LavaTilesetName;
     public Vector2 TilesetSize = new Vector2(224, 224);
     public Sprite ShadowSprite;
+    public bool menu;
 
     public Dictionary<Tile, GameObject> GeneratedTiles { get; private set; }
     public Dictionary<Tile, SpriteRenderer> GeneratedShadows { get; private set; }
@@ -332,7 +333,13 @@ public class TileSpriteController : MonoBehaviour
     {
         foreach (var shadow in GeneratedShadows)
         {
-
+            if (menu)
+            {
+                Color b = shadow.Value.color;
+                b.a =  0;
+                shadow.Value.color = b;
+                continue;
+            }
             int playerX = (int)(_player.transform.position.x + 0.5f);
             int playerY = (int)(_player.transform.position.y + 0.5f);
             int tileX = (int)(shadow.Key.Position.x);
