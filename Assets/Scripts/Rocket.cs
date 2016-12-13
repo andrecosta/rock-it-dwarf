@@ -16,6 +16,7 @@ public class Rocket : MonoBehaviour
     public bool shotByPlayer;
 
     private SpriteRenderer _sr;
+    private List<GameObject> enemiesToClear;
     private ParticleSystem _ps;
     private GameController _gc;
 
@@ -49,34 +50,21 @@ public class Rocket : MonoBehaviour
 
         if (shotByPlayer)
         {
+            foreach (GameObject enemy in _gc.enemyList)
+            {
+                if (Vector3.Distance(enemy.transform.position, transform.position) < 0.2f)
+                {
+                    _gc.enemyList.Remove(enemy);
+                    _gc.KillEnemy(enemy);
+                    checkEnemiesinExplosion();
+                    areaDamage(tile);
+                    StartCoroutine(Extinguish());
+                }
+            }
             if ((tile != null && tile.Type == TileType.Empty))
             {
-                tile.Type = TileType.Terrain;
-                Tile neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y + 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y - 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y + 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y - 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y - 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y + 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-
+                areaDamage(tile);
+                checkEnemiesinExplosion();
                 StartCoroutine(Extinguish());
             }
             else if (tile == null)
@@ -91,31 +79,7 @@ public class Rocket : MonoBehaviour
                     _gc.PlayerDeath();
                 }
 
-                tile.Type = TileType.Terrain;
-                Tile neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y + 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y - 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y + 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y - 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y - 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
-                neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y + 1);
-                if (neighbor != null && neighbor.Type != TileType.Terrain)
-                    neighbor.Type = TileType.Terrain;
+                areaDamage(tile);
 
                 StartCoroutine(Extinguish());
             }
@@ -136,5 +100,46 @@ public class Rocket : MonoBehaviour
             yield return null;
 
         Destroy(gameObject);
+    }
+
+    private void areaDamage(Tile tile)
+    {
+        tile.Type = TileType.Terrain;
+        Tile neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y);
+        if (neighbor != null && neighbor.Type != TileType.Terrain)
+            neighbor.Type = TileType.Terrain;
+        neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y);
+        if (neighbor != null && neighbor.Type != TileType.Terrain)
+            neighbor.Type = TileType.Terrain;
+        neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y + 1);
+        if (neighbor != null && neighbor.Type != TileType.Terrain)
+            neighbor.Type = TileType.Terrain;
+        neighbor = GameController.Instance.GetTileAt(tile.X, tile.Y - 1);
+        if (neighbor != null && neighbor.Type != TileType.Terrain)
+            neighbor.Type = TileType.Terrain;
+        neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y + 1);
+        if (neighbor != null && neighbor.Type != TileType.Terrain)
+            neighbor.Type = TileType.Terrain;
+        neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y - 1);
+        if (neighbor != null && neighbor.Type != TileType.Terrain)
+            neighbor.Type = TileType.Terrain;
+        neighbor = GameController.Instance.GetTileAt(tile.X + 1, tile.Y - 1);
+        if (neighbor != null && neighbor.Type != TileType.Terrain)
+            neighbor.Type = TileType.Terrain;
+        neighbor = GameController.Instance.GetTileAt(tile.X - 1, tile.Y + 1);
+        if (neighbor != null && neighbor.Type != TileType.Terrain)
+            neighbor.Type = TileType.Terrain;
+    }
+
+    private void checkEnemiesinExplosion()
+    {
+        foreach (GameObject enemy in _gc.enemyList)
+        {
+            if (Vector3.Distance(enemy.transform.position, transform.position) < 1.5f)
+            {
+                _gc.enemyList.Remove(enemy);
+                _gc.KillEnemy(enemy);
+            }
+        }
     }
 }

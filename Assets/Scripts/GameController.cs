@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public Tile[,] LavaTiles;
     public List<Tile> EmptyTiles;
     public List<Tile> goalTiles;
+    public List<GameObject> enemyList;
     public Tile goalTile;
 
     public Action<Tile> CallbackTileChanged { get; set; }
@@ -111,8 +112,16 @@ public class GameController : MonoBehaviour
             GameObject currEnemy = Instantiate(enemy, new Vector3(startingTile.X, startingTile.Y, 0), Quaternion.identity);
             AIController enemyAI = currEnemy.GetComponent<AIController>();
             enemyAI.setTile(startingTile);
+            enemyList.Add(currEnemy);
             existingEnemies++;
         }
+    }
+
+    public void KillEnemy(GameObject enemy)
+    {
+        enemyList.Remove(enemy);
+        existingEnemies--;
+        Destroy(enemy);
     }
 
     private void instantiateGoal()

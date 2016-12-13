@@ -192,7 +192,7 @@ public class AIController : MonoBehaviour {
         Tile tile;
 
 
-        if (Mathf.Abs(yToPlayer) <= 0.5)
+        if (Mathf.Abs(yToPlayer) <= 0.5f)
         {
             if (!checkWalls())
             {
@@ -205,11 +205,11 @@ public class AIController : MonoBehaviour {
                 return;
             }
         }
-        else if (Mathf.Abs(xToPlayer) <= 0.5)
+        else if (Mathf.Abs(xToPlayer) <= 0.5f)
         {
             if (!checkWalls())
             {
-                direction = new Vector2(Mathf.Sign(yToPlayer), 0);
+                direction = new Vector2(0, Mathf.Sign(yToPlayer));
                 _orientation = direction;
 
                 tile = GameController.Instance.GetTileAt(transform.position.x + direction.x, transform.position.y + direction.y);
