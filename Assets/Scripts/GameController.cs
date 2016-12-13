@@ -112,6 +112,7 @@ public class GameController : MonoBehaviour
 
             GameObject currEnemy = Instantiate(enemy, new Vector3(startingTile.X, startingTile.Y, 0), Quaternion.identity);
             AIController enemyAI = currEnemy.GetComponent<AIController>();
+            enemyAI.menu = menu;
             enemyAI.setTile(startingTile);
             enemyList.Add(currEnemy);
             existingEnemies++;

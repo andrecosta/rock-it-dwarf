@@ -256,7 +256,7 @@ public class MapGenerator {
 
             if (_menu)
             {
-                if ((x < 45 && x > 5) && (y < 30 && y > 20))
+                if ((x < 40 && x > 20) && (y < 30 && y > 22))
                 {
                     continue;
                 }
@@ -304,7 +304,7 @@ public class MapGenerator {
 
         if (_menu)
         {
-            if ((x < 35 && x > 10) && (y < 30 && y > 22))
+            if ((x < 40 && x > 20) && (y < 30 && y > 22))
             {
                 return false;
             }
