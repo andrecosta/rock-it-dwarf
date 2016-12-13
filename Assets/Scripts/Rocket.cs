@@ -52,22 +52,31 @@ public class Rocket : MonoBehaviour
 
         if (shotByPlayer)
         {
+            List<GameObject> enemiesToRemove = new List<GameObject>();
             foreach (GameObject enemy in _gc.enemyList)
             {
                 if (Vector3.Distance(enemy.transform.position, transform.position) < 0.2f)
                 {
                     areaDamage(tile);
+                    foreach (GameObject enemy2 in _gc.enemyList)
+                    {
+                        if (Vector3.Distance(enemy2.transform.position, transform.position) < 1.5f)
+                            enemiesToRemove.Add(enemy2);
+                    }
                     StartCoroutine(Extinguish());
-                    checkEnemiesinExplosion();
-                    _gc.enemyList.Remove(enemy);
-                    _gc.KillEnemy(enemy);
                 }
             }
-            if ((tile != null && tile.Type == TileType.Empty))
+            foreach (var e in enemiesToRemove)
+            {
+                _gc.enemyList.Remove(e);
+                _gc.KillEnemy(e);
+            }
+
+            if (tile != null && tile.Type == TileType.Empty)
             {
                 areaDamage(tile);
                 StartCoroutine(Extinguish());
-                checkEnemiesinExplosion();
+                //checkEnemiesinExplosion();
             }
             else if (tile == null)
                 StartCoroutine(Extinguish());
@@ -136,18 +145,6 @@ public class Rocket : MonoBehaviour
         if (Vector3.Distance(_gc.player.transform.position, transform.position) < 1f)
         {
             _gc.PlayerDeath();
-        }
-    }
-
-    private void checkEnemiesinExplosion()
-    {
-        foreach (GameObject enemy in _gc.enemyList)
-        {
-            if (Vector3.Distance(enemy.transform.position, transform.position) < 1.5f)
-            {
-                _gc.enemyList.Remove(enemy);
-                _gc.KillEnemy(enemy);
-            }
         }
     }
 }

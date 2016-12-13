@@ -124,7 +124,7 @@ public class GameController : MonoBehaviour
 
     public void KillEnemy(GameObject enemy)
     {
-        enemyList.Remove(enemy);
+        //enemyList.Remove(enemy);
         existingEnemies--;
         Destroy(enemy);
     }
