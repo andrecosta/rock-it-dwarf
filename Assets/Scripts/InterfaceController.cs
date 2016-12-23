@@ -68,7 +68,6 @@ public class InterfaceController : MonoBehaviour
         while (true)
         {
             float dist = Vector3.SqrMagnitude(_player.transform.position - _goal.transform.position);
-            print(dist);
             if (dist < 8)
                 ExitDirectionsText.text = "I can see the light";
             else if (dist < 16)

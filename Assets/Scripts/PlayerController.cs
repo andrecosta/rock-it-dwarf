@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         transform.position = _currentTile.Position;
-        Camera.main.transform.position = transform.position + Vector3.forward * -10;
+        //Camera.main.transform.position = transform.position + Vector3.forward * -10;
 
         // Load animation
         _animator = GetComponent<Animator>();
@@ -81,7 +81,23 @@ public class PlayerController : MonoBehaviour
 
     void LateUpdate()
     {
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, transform.position + Vector3.forward * -10, Time.deltaTime*9);
+        Vector3 targetPosition = transform.position;
+
+        // TODO: Make these values change according to level size and camera bounds
+        float maxX = 29f;
+        float minX = 10;
+        float maxY = 34.5f;
+        float minY = 4.5f;
+
+        targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
+        targetPosition.y = Mathf.Clamp(targetPosition.y, minY, maxY);
+
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPosition + Vector3.forward * -10, Time.deltaTime*9);
+    }
+
+    void UpdateCameraPosition()
+    {
+        
     }
 
     void Movement()
