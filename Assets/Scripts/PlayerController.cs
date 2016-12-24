@@ -62,21 +62,27 @@ public class PlayerController : MonoBehaviour
             _digTimer = 1;
             _animator.SetBool("Is Mining", false);
         }
-        
+
         if (_shootCooldown > 0)
         {
             _shootCooldown -= Time.deltaTime;
             if (_shootCooldown < 0.7f)
                 _animator.SetBool("Is Shooting", false);
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-            Shoot(Vector2.left);
-        else if (Input.GetKey(KeyCode.RightArrow))
-            Shoot(Vector2.right);
-        else if (Input.GetKey(KeyCode.UpArrow))
-            Shoot(Vector2.up);
-        else if (Input.GetKey(KeyCode.DownArrow))
-            Shoot(Vector2.down);
+        else
+        {
+            float shootX = Input.GetAxis("ShootHorizontal");
+            float shootY = Input.GetAxis("ShootVertical");
+
+            if (shootX < 0)
+                Shoot(Vector2.left);
+            else if (shootX > 0)
+                Shoot(Vector2.right);
+            else if (shootY < 0)
+                Shoot(Vector2.down);
+            else if (shootY > 0)
+                Shoot(Vector2.up);
+        }
     }
 
     void LateUpdate()
