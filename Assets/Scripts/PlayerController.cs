@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private float _digTimer;
     private float _shootCooldown;
     private float _lastHorizontalOrientation;
-    private float _lastVerticalOrientation;
     private Animator _animator;
 
     void Start()
@@ -34,7 +33,7 @@ public class PlayerController : MonoBehaviour
         transform.position = _currentTile.Position;
         //Camera.main.transform.position = transform.position + Vector3.forward * -10;
 
-        // Load animation
+        // Get animator component
         _animator = GetComponent<Animator>();
 
         StartCoroutine(CheckLava());
@@ -101,11 +100,6 @@ public class PlayerController : MonoBehaviour
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPosition + Vector3.forward * -10, Time.deltaTime*9);
     }
 
-    void UpdateCameraPosition()
-    {
-        
-    }
-
     void Movement()
     {
         // Move the player towards the target tile
@@ -136,8 +130,6 @@ public class PlayerController : MonoBehaviour
         _orientation = new Vector2(h, v);
         if (h != 0)
             _lastHorizontalOrientation = _orientation.x;
-        if (v != 0)
-            _lastVerticalOrientation = _orientation.y;
         if (Mathf.Abs(h) > 0)
             _orientation.y = 0;
 
@@ -171,13 +163,9 @@ public class PlayerController : MonoBehaviour
     {
         _animator.SetFloat("Vertical Velocity", direction.y);
         if (direction.x < 0)
-        {
             transform.localEulerAngles = new Vector3(0, 180, 0);
-        }
         else
-        {
             transform.localEulerAngles = Vector3.zero;
-        }
 
         Rocket rocket = Instantiate(RocketPrefab, transform.position, Quaternion.identity);
         rocket.ShootDirection = direction;

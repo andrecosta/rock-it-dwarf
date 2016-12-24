@@ -17,54 +17,34 @@ public class AIController : MonoBehaviour {
     private Tile _targetTile;
     private float _moveTimer;
     private Vector2 _orientation;
-    private Sprite[] _animations;
-    private float _animationTimer;
-    private int _animationFrame;
     private int _groundType = 0;
     private SpriteRenderer _sr;
     private float _lastHorizontalOrientation;
     private bool _deteced_player;
     private float timerForAction = 0;
     private GameObject _player;
+    private Animator _animator;
 
     public void setTile(Tile currTile) { _currentTile = currTile; }
 
     void Start()
     {
-        // Load animation
-        _animations = Resources.LoadAll<Sprite>("Sprites/DwarfWalking");
         _gameController = GameController.Instance;
         _player = _gameController.player;
         _sr = GetComponent<SpriteRenderer>();
         _orientation = getNewDirection();
         _targetTile = _currentTile;
-    }
-    // Update is called once per frame
-    void Update () {
-        Animation();
 
+        // Get animator component
+        _animator = GetComponent<Animator>();
+    }
+
+    void Update ()
+    {
         if (!checkIfPlayer())
             wander();
         else
             alerted();
-    }
-
-    void Animation()
-    {
-        if (_currentTile == _targetTile)
-            _animationFrame = 0;
-        else if (_animationTimer <= 0)
-        {
-            _animationTimer = 0.05f;
-            _animationFrame++;
-            if (_animationFrame >= _animations.Length)
-                _animationFrame = 0;
-        }
-        else
-            _animationTimer -= Time.deltaTime;
-
-        _sr.flipX = _lastHorizontalOrientation < 0;
-        _sr.sprite = _animations[_animationFrame];
     }
 
     bool finishedMovement()
@@ -94,13 +74,45 @@ public class AIController : MonoBehaviour {
             speed = (Time.deltaTime * 3 / 2);
 
         if (Vector2.Distance(transform.position, _targetTile.Position) >= 0.01f)
+        {
             transform.position = Vector3.MoveTowards(transform.position, _targetTile.Position, speed);
+
+            _lastHorizontalOrientation = _orientation.x;
+
+            if (_targetTile.Type == TileType.Terrain)
+            {
+                _animator.SetBool("Is Shooting", false);
+                _animator.SetBool("Is Mining", false);
+                _animator.SetBool("Is Moving", true);
+            }
+            else
+            {
+                _animator.SetBool("Is Moving", false);
+                _animator.SetBool("Is Mining", true);
+            }
+            _animator.SetFloat("Horizontal Velocity", Mathf.Abs(_orientation.x));
+            _animator.SetFloat("Vertical Velocity", _orientation.y);
+            _animator.SetFloat("Speed", _orientation.magnitude);
+
+            if (_lastHorizontalOrientation < 0)
+                transform.localEulerAngles = new Vector3(0, 180, 0);
+            else
+                transform.localEulerAngles = Vector3.zero;
+        }
 
         if (Vector2.Distance(transform.position, _targetTile.Position) < 0.05f)
             _currentTile = _targetTile;
 
         if (Vector2.Distance(transform.position, _targetTile.Position) < 0.4f)
+        {
+            //_animator.SetBool("Is Moving", false);
+            //_animator.SetBool("Is Mining", true);
             Dig();
+        }
+        else
+        {
+            //_animator.SetBool("Is Mining", false);
+        }
 
         // Upon reaching the target tile, set it as the current tile
         if (Vector2.Distance(transform.position, _targetTile.Position) < 0.05f)
@@ -118,14 +130,18 @@ public class AIController : MonoBehaviour {
 
     void wander()
     {
-
         if (!finishedMovement())
             return;
+
         //implementing a delay between inputs
         timerForAction -= Time.deltaTime;
 
         if (timerForAction > 0)
+        {
+            _animator.SetBool("Is Moving", false);
+            _animator.SetFloat("Speed", 0);
             return;
+        }
 
         Vector2 direction;
         if (Random.Range(1, 100) < randomness * 100)
@@ -151,6 +167,7 @@ public class AIController : MonoBehaviour {
 
         _targetTile = tile;
     }
+
     void alerted()
     {
         if (!finishedMovement())
@@ -196,7 +213,7 @@ public class AIController : MonoBehaviour {
 
     private void shoot_bazooka(float xToPlayer, float yToPlayer)
     {
-        Vector2 direction;
+        Vector2 direction = Vector2.zero;
         Tile tile;
 
 
@@ -239,10 +256,17 @@ public class AIController : MonoBehaviour {
                 _targetTile = tile;
             return;
         }
-
+        
         if (_shootCooldown > 0)
         {
+            _animator.SetBool("Is Moving", false);
+            _animator.SetFloat("Speed", 0);
             _shootCooldown -= Time.deltaTime;
+            if (_shootCooldown < 1.2f)
+            {
+                _animator.SetBool("Is Shooting", false);
+                _animator.SetBool("Is Moving", true);
+            }
             return;
         }
 
@@ -272,6 +296,8 @@ public class AIController : MonoBehaviour {
         if (_shootCooldown > 0)
         {
             _shootCooldown -= Time.deltaTime;
+            _animator.SetBool("Is Moving", false);
+            _animator.SetFloat("Speed", 0);
             return;
         }
         shoot_arrow(targetTile);
@@ -332,10 +358,18 @@ public class AIController : MonoBehaviour {
         if (_currentTile != _targetTile)
             return;
 
+        _animator.SetFloat("Vertical Velocity", projectileDirection.y);
+        if (projectileDirection.x < 0)
+            transform.localEulerAngles = new Vector3(0, 180, 0);
+        else
+            transform.localEulerAngles = Vector3.zero;
+
         Rocket rocket = Instantiate(rocketPrefab, transform.position, Quaternion.identity);
         rocket.ShootDirection = projectileDirection;
         rocket.shotByPlayer = false;
         _shootCooldown = 1.5f;
+        _animator.SetBool("Is Moving", false);
+        _animator.SetBool("Is Shooting", true);
     }
 
     void shoot_arrow(Tile target)
@@ -347,27 +381,6 @@ public class AIController : MonoBehaviour {
         arrow.targetTile = target;
         _shootCooldown = 1.5f;
     }
-
-    /*
-
-    void Animation()
-    {
-        if (_currentTile == _targetTile)
-            _animationFrame = 0;
-        else if (_animationTimer <= 0)
-        {
-            _animationTimer = 0.05f;
-            _animationFrame++;
-            if (_animationFrame >= _animations.Length)
-                _animationFrame = 0;
-        }
-        else
-            _animationTimer -= Time.deltaTime;
-
-        _sr.flipX = _lastHorizontalOrientation < 0;
-        _sr.sprite = _animations[_animationFrame];
-    }*/
-
 
     private bool checkWalls()
     {

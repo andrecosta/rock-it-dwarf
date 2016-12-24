@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4962510981220620}
   - component: {fileID: 212501504431490226}
   - component: {fileID: 114150317154317994}
+  - component: {fileID: 95272643673175024}
   m_Layer: 0
   m_Name: Mole
   m_TagString: Untagged
@@ -41,6 +42,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &95272643673175024
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1839030531504768}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 096e30978e314e448b5b982c90272f0e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114150317154317994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -54,6 +72,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomness: 0.2
   type: 2
+  hardMode: 0
+  rocketPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
+  menu: 0
 --- !u!212 &212501504431490226
 SpriteRenderer:
   m_ObjectHideFlags: 1
