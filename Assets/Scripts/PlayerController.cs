@@ -101,11 +101,13 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 targetPosition = transform.position;
 
-        // TODO: Make these values change according to level size and camera bounds
-        float maxX = 29f;
-        float minX = 10;
-        float maxY = 34.5f;
-        float minY = 4.5f;
+        float height = Camera.main.orthographicSize * 2;
+        float width = Camera.main.aspect * height;
+
+        float maxX = 40 - width / 2 - 0.5f;
+        float minX = width / 2 - 0.5f;
+        float maxY = 40 - height / 2 - 0.5f;
+        float minY = height / 2 - 0.5f;
 
         targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
         targetPosition.y = Mathf.Clamp(targetPosition.y, minY, maxY);
