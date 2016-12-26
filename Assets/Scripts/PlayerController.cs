@@ -6,6 +6,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public Rocket RocketPrefab;
+    [Header("Audio")]
+    public AudioClip DrillingSound;
+    public AudioClip DigSound;
+    public AudioClip ShootSound;
+
     public Vector2 getOrientation()
     {
         return _orientation;
@@ -19,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private float _shootCooldown;
     private float _lastHorizontalOrientation;
     private Animator _animator;
+    private AudioSource _audioSource;
 
     void Start()
     {
@@ -31,10 +37,10 @@ public class PlayerController : MonoBehaviour
             }
         }
         transform.position = _currentTile.Position;
-        //Camera.main.transform.position = transform.position + Vector3.forward * -10;
 
-        // Get animator component
+        // Get components
         _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
 
         StartCoroutine(CheckLava());
     }
@@ -47,9 +53,13 @@ public class PlayerController : MonoBehaviour
         Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
         if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) && tile != null && tile.Type == TileType.Empty)
         {
+            if (_audioSource.volume < 0.1f)
+                _audioSource.volume += Time.deltaTime*0.5f;
+
             _digTimer -= Time.deltaTime;
             _animator.SetBool("Is Moving", false);
             _animator.SetBool("Is Mining", true);
+
             if (_digTimer <= 0)
             {
                 Dig();
@@ -60,6 +70,9 @@ public class PlayerController : MonoBehaviour
         {
             _digTimer = 1;
             _animator.SetBool("Is Mining", false);
+
+            if (_audioSource.volume > 0)
+                _audioSource.volume -= Time.deltaTime * 0.5f;
         }
 
         if (_shootCooldown > 0)
@@ -156,7 +169,10 @@ public class PlayerController : MonoBehaviour
 
         Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
         if (tile != null && tile.Type == TileType.Empty)
+        {
             GameController.Instance.GetTileAt(tile.X, tile.Y).Type = TileType.Terrain;
+            AudioSource.PlayClipAtPoint(DigSound, tile.Position);
+        }
     }
 
     void Shoot(Vector2 direction)
@@ -173,6 +189,7 @@ public class PlayerController : MonoBehaviour
         _shootCooldown = 1;
         _animator.SetBool("Is Moving", false);
         _animator.SetBool("Is Shooting", true);
+        AudioSource.PlayClipAtPoint(ShootSound, transform.position);
     }
 
     IEnumerator CheckLava()

@@ -9,6 +9,10 @@ public class AIController : MonoBehaviour {
     public bool hardMode = false;
     public Rocket rocketPrefab;
     public Arrow arrowPrefab;
+    [Header("Audio")]
+    public AudioClip DrillingSound;
+    public AudioClip DigSound;
+    public AudioClip ShootSound;
 
     public bool menu;
     private Tile _currentTile;
@@ -24,6 +28,7 @@ public class AIController : MonoBehaviour {
     private float timerForAction = 0;
     private GameObject _player;
     private Animator _animator;
+    private AudioSource _audioSource;
 
     public void setTile(Tile currTile) { _currentTile = currTile; }
 
@@ -35,8 +40,9 @@ public class AIController : MonoBehaviour {
         _orientation = getNewDirection();
         _targetTile = _currentTile;
 
-        // Get animator component
+        // Get components
         _animator = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     void Update ()
@@ -84,11 +90,15 @@ public class AIController : MonoBehaviour {
                 _animator.SetBool("Is Shooting", false);
                 _animator.SetBool("Is Mining", false);
                 _animator.SetBool("Is Moving", true);
+                if (_audioSource.volume > 0f)
+                    _audioSource.volume -= Time.deltaTime * 0.1f;
             }
             else
             {
                 _animator.SetBool("Is Moving", false);
                 _animator.SetBool("Is Mining", true);
+                if (_audioSource.volume < 0.01f && Vector2.Distance(transform.position, _player.transform.position) < 5)
+                    _audioSource.volume += Time.deltaTime * 0.1f;
             }
             _animator.SetFloat("Horizontal Velocity", Mathf.Abs(_orientation.x));
             _animator.SetFloat("Vertical Velocity", _orientation.y);
@@ -350,7 +360,11 @@ public class AIController : MonoBehaviour {
 
         Tile tile = GameController.Instance.GetTileAt(_currentTile.X + _orientation.x, _currentTile.Y + _orientation.y);
         if (tile != null && tile.Type == TileType.Empty)
+        {
             GameController.Instance.GetTileAt(tile.X, tile.Y).Type = TileType.Terrain;
+            if (Vector2.Distance(transform.position, _player.transform.position) < 5)
+                AudioSource.PlayClipAtPoint(DigSound, tile.Position, 0.2f);
+        }
     }
 
     void Shoot(Vector2 projectileDirection)
@@ -370,6 +384,7 @@ public class AIController : MonoBehaviour {
         _shootCooldown = 1.5f;
         _animator.SetBool("Is Moving", false);
         _animator.SetBool("Is Shooting", true);
+        AudioSource.PlayClipAtPoint(ShootSound, transform.position);
     }
 
     void shoot_arrow(Tile target)
