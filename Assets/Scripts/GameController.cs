@@ -24,11 +24,16 @@ public class GameController : MonoBehaviour
 
     public bool IsGameOver { get; private set; }
     public bool IsGameVictory { get; private set; }
+    public bool IsPaused { get; private set; }
     public Action<Tile> CallbackTileChanged { get; set; }
     private MapGenerator _map;
     public GameObject[] enemies;
     public int enemyAmmount;
     public int existingEnemies;
+
+    // Events
+    public Action OnPause;
+    public Action OnUnpause;
 
     private float enemyTimer;
 
@@ -67,7 +72,20 @@ public class GameController : MonoBehaviour
                 InstantiateEnemies();
                 enemyTimer = 15;
             }
+        }
 
+        // Pausing
+        if (Input.GetButtonDown("Pause") && !IsPaused)
+        {
+            IsPaused = true;
+            if (OnPause != null)
+                OnPause();
+        }
+        else if (Input.GetButtonDown("Pause") && IsPaused)
+        {
+            IsPaused = false;
+            if (OnUnpause != null)
+                OnUnpause();
         }
     }
 

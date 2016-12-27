@@ -94,7 +94,7 @@ public class TileSpriteController : MonoBehaviour
             shadowGo.transform.localPosition = tile.Position;
             sr = shadowGo.AddComponent<SpriteRenderer>();
             sr.sortingLayerName = "LOS";
-            sr.enabled = false;
+            //sr.enabled = false;
             sr.sprite = ShadowSprite;
             sr.color = Color.black;
             GeneratedShadows.Add(tile, sr);

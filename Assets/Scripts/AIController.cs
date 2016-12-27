@@ -47,6 +47,9 @@ public class AIController : MonoBehaviour {
 
     void Update ()
     {
+        if (GameController.Instance.IsPaused)
+            return;
+
         if (!checkIfPlayer())
             wander();
         else

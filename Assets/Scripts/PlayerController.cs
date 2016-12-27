@@ -47,6 +47,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (GameController.Instance.IsPaused)
+            return;
+
         if (!_animator.GetBool("Is Shooting"))
             Movement();
 
