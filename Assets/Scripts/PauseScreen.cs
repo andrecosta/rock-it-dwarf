@@ -45,6 +45,9 @@ public class PauseScreen : MonoBehaviour
     public Sprite RThumbDown;
     public Sprite RThumbLeft;
     public Sprite RThumbRight;
+    [Header("Actions")]
+    public Text ContinueText;
+    public Image QuitFillBar;
 
     private GameController _gc;
 
@@ -106,6 +109,26 @@ public class PauseScreen : MonoBehaviour
                 RThumbImage.sprite = RThumbUp;
             else
                 RThumbImage.sprite = RThumbIdle;
+
+            // "Continue" text blink
+            ContinueText.color = Mathf.Sin(Time.unscaledTime * 20) > 0
+                ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
+                : new Color(180 / 255f, 147 / 255f, 122 / 255f);
+
+            // "Quit" fill bar
+            if (Input.GetButton("Pause"))
+            {
+                QuitFillBar.fillAmount += Time.unscaledDeltaTime;
+                if (QuitFillBar.fillAmount >= 1)
+                {
+                    #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                    #endif
+                    Application.Quit();
+                }
+            }
+            else
+                QuitFillBar.fillAmount -= Time.unscaledDeltaTime;
         }
     }
 
@@ -120,6 +143,7 @@ public class PauseScreen : MonoBehaviour
     {
         print("Unpause");
         Time.timeScale = 1;
+        QuitFillBar.fillAmount = 0;
         gameObject.SetActive(false);
     }
 }

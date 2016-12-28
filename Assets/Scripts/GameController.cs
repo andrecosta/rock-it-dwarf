@@ -75,13 +75,13 @@ public class GameController : MonoBehaviour
         }
 
         // Pausing
-        if (Input.GetButtonDown("Pause") && !IsPaused)
+        if (Input.GetButtonUp("Pause") && !IsPaused)
         {
             IsPaused = true;
             if (OnPause != null)
                 OnPause();
         }
-        else if (Input.GetButtonDown("Pause") && IsPaused)
+        else if (Input.GetButtonUp("Pause") && IsPaused)
         {
             IsPaused = false;
             if (OnUnpause != null)
