@@ -7,7 +7,7 @@ public class Arrow : MonoBehaviour {
     public Tile targetTile;
     private Vector3 _shootDirection;
     private GameController _gc;
-    private float despawnTime = 5;
+    private float _despawnTime = 5;
     private Animator _animator;
 
     // Use this for initialization
@@ -27,14 +27,14 @@ public class Arrow : MonoBehaviour {
         {
             _shootDirection = Vector3.zero;
             _animator.SetFloat("Speed", 0);
-            Destroy(gameObject, 5);
+            Destroy(gameObject, _despawnTime);
         }
 
         if (Vector3.Distance(_gc.player.transform.position, transform.position) < 0.2f)
         {
             _shootDirection = Vector3.zero;
             _animator.SetFloat("Speed", 0);
-            Destroy(gameObject, 5);
+            Destroy(gameObject, _despawnTime);
             _gc.PlayerDeath();
         }
     }

@@ -22,7 +22,6 @@ public class AIController : MonoBehaviour {
     private float _moveTimer;
     private Vector2 _orientation;
     private int _groundType = 0;
-    private SpriteRenderer _sr;
     private float _lastHorizontalOrientation;
     private bool _deteced_player;
     private float timerForAction = 0;
@@ -36,7 +35,6 @@ public class AIController : MonoBehaviour {
     {
         _gameController = GameController.Instance;
         _player = _gameController.player;
-        _sr = GetComponent<SpriteRenderer>();
         _orientation = getNewDirection();
         _targetTile = _currentTile;
 
@@ -292,9 +290,7 @@ public class AIController : MonoBehaviour {
 
     private void arrowMonster_behaviour(float xToPlayer, float yToPlayer)
     {
-        Vector2 direction;
         Tile targetTile;
-        Tile tile;
 
         if (!checkWalls())
         {
@@ -431,7 +427,7 @@ public class AIController : MonoBehaviour {
 
         int numerator = longest >> 1;
 
-        int D = 2 * dy - dx;
+        //int D = 2 * dy - dx;
         int y = playerY;
         int x = playerX;
 

@@ -366,7 +366,7 @@ public class TileSpriteController : MonoBehaviour
 
             int numerator = longest >> 1;
 
-            int D = 2 * dy - dx;
+            //int D = 2 * dy - dx;
             int y = playerY;
             int x = playerX;
 

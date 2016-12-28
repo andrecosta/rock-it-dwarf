@@ -297,7 +297,7 @@ public class MapGenerator {
 
     private bool checkTile(int x, int y)
     {
-        Tile currTile = _terrainTiles[x, y];
+        //Tile currTile = _terrainTiles[x, y];
 
         if ((x < 3 && y < 3) || (x < 3 && y > (_mapSize - 4)) || (x > (_mapSize - 4) && y < 3) || (x > (_mapSize - 4) && y > (_mapSize - 4)))
             return false;
