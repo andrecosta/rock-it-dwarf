@@ -47,11 +47,9 @@ public class PauseScreen : MonoBehaviour
     public Sprite RThumbRight;
     [Header("Controls (Actions)")]
     public Image EscImage;
-    public Image EscImage2;
     public Sprite EscReleased;
     public Sprite EscPressed;
     public Image StartImage;
-    public Image StartImage2;
     public Sprite StartReleased;
     public Sprite StartPressed;
     public Image RImage;
@@ -61,7 +59,7 @@ public class PauseScreen : MonoBehaviour
     public Sprite YReleased;
     public Sprite YPressed;
     [Header("Visual")]
-    public Text ContinueText;
+    public Text BlinkingText;
     public Image QuitFillBar;
 
     private GameController _gc;
@@ -99,11 +97,9 @@ public class PauseScreen : MonoBehaviour
 
             // Esc key
             EscImage.sprite = Input.GetKey(KeyCode.Escape) ? EscPressed : EscReleased;
-            EscImage2.sprite = Input.GetKey(KeyCode.Escape) ? EscPressed : EscReleased;
 
             // Start button
             StartImage.sprite = Input.GetKey(KeyCode.JoystickButton7) ? StartPressed : StartReleased;
-            StartImage2.sprite = Input.GetKey(KeyCode.JoystickButton7) ? StartPressed : StartReleased;
 
             // R key
             RImage.sprite = Input.GetKey(KeyCode.R) ? RPressed : RReleased;
@@ -141,7 +137,7 @@ public class PauseScreen : MonoBehaviour
                 RThumbImage.sprite = RThumbIdle;
 
             // "Continue" text blink
-            ContinueText.color = Mathf.Sin(Time.unscaledTime * 20) > 0
+            BlinkingText.color = Mathf.Sin(Time.unscaledTime * 20) > 0
                 ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
                 : new Color(180 / 255f, 147 / 255f, 122 / 255f);
 
