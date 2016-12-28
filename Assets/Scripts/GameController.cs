@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
 {
     // Singleton
     public static GameController Instance { get; private set; }
+    public static bool IsFirstStartDone { get; private set; }
 
     //Map Generation Variables
     public bool menu;
@@ -85,21 +86,23 @@ public class GameController : MonoBehaviour
             return;
 
         // Pausing
-        if (Input.GetButtonUp("Pause") && !IsPaused)
+        if (Input.GetButtonUp("Pause") && !IsPaused || !IsFirstStartDone && !IsPaused)
         {
             IsPaused = true;
             if (OnPause != null)
                 OnPause();
         }
-        else if (Input.GetButtonUp("Pause") && IsPaused)
+        else if (Input.GetButtonUp("Pause") && IsPaused || Input.anyKey && !IsFirstStartDone)
         {
             IsPaused = false;
             if (OnUnpause != null)
                 OnUnpause();
+
+            IsFirstStartDone = true;
         }
 
         // Restart
-        if (IsPaused && Input.GetButtonUp("Restart"))
+        if (Input.GetButtonUp("Restart") && IsPaused && IsFirstStartDone)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }

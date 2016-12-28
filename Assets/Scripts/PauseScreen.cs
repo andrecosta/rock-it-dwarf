@@ -1,10 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseScreen : MonoBehaviour
 {
+    [Header("Text Sections")]
+    public GameObject PausedHeader;
+    public GameObject FirstStart;
+    public GameObject Continue;
+    public GameObject Restart;
+
     [Header("Controls (WASD)")]
     public Image WImage;
     public Sprite WReleased;
@@ -61,13 +68,12 @@ public class PauseScreen : MonoBehaviour
     [Header("Visual")]
     public Text BlinkingText;
     public Image QuitFillBar;
+    public Image AnyKeyImage;
+    public Sprite AnyKeyReleased;
+    public Sprite AnyKeyPressed;
 
     private GameController _gc;
-
-    void Awake()
-    {
-    }
-
+    
     void Start()
     {
         _gc = GameController.Instance;
@@ -136,11 +142,6 @@ public class PauseScreen : MonoBehaviour
             else
                 RThumbImage.sprite = RThumbIdle;
 
-            // "Continue" text blink
-            BlinkingText.color = Mathf.Sin(Time.unscaledTime * 20) > 0
-                ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
-                : new Color(180 / 255f, 147 / 255f, 122 / 255f);
-
             // "Quit" fill bar
             if (Input.GetButton("Pause"))
             {
@@ -155,6 +156,23 @@ public class PauseScreen : MonoBehaviour
             }
             else
                 QuitFillBar.fillAmount -= Time.unscaledDeltaTime;
+
+            // "Continue" text blink
+            BlinkingText.color = Mathf.Sin(Time.unscaledTime * 20) > 0
+                ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
+                : new Color(180 / 255f, 147 / 255f, 122 / 255f);
+
+            // "Press any key to continue" text blink
+            if (!GameController.IsFirstStartDone)
+            {
+                FirstStart.GetComponentsInChildren<Text>().Last().color = Mathf.Sin(Time.unscaledTime * 20) > 0
+                    ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
+                    : new Color(180 / 255f, 147 / 255f, 122 / 255f);
+
+                AnyKeyImage.sprite = Mathf.Sin(Time.unscaledTime * 20) > 0
+                    ? AnyKeyReleased
+                    : AnyKeyPressed;
+            }
         }
     }
 
@@ -162,6 +180,23 @@ public class PauseScreen : MonoBehaviour
     {
         print("Pause");
         Time.timeScale = 0;
+        QuitFillBar.fillAmount = 0;
+
+        if (!GameController.IsFirstStartDone)
+        {
+            PausedHeader.SetActive(false);
+            FirstStart.SetActive(true);
+            Continue.SetActive(false);
+            Restart.SetActive(false);
+        }
+        else
+        {
+            PausedHeader.SetActive(true);
+            FirstStart.SetActive(false);
+            Continue.SetActive(true);
+            Restart.SetActive(true);
+        }
+
         gameObject.SetActive(true);
     }
 
@@ -169,7 +204,6 @@ public class PauseScreen : MonoBehaviour
     {
         print("Unpause");
         Time.timeScale = 1;
-        QuitFillBar.fillAmount = 0;
         gameObject.SetActive(false);
     }
 }
