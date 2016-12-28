@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour
 {
     // Singleton
     public static GameController Instance { get; private set; }
-    public static bool IsFirstStartDone { get; private set; }
+    public static bool IsFirstStartDone { get; set; }
 
     //Map Generation Variables
     public bool menu;
@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour
 
     public bool IsGameOver { get; private set; }
     public bool IsGameVictory { get; private set; }
-    public bool IsPaused { get; private set; }
+    public bool IsPaused { get; set; }
     public Action<Tile> CallbackTileChanged { get; set; }
     private MapGenerator _map;
     public GameObject[] enemies;
@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour
     public Action OnUnpause;
 
     private float enemyTimer;
+    private bool _canUnpause = true;
 
     void Awake()
     {
@@ -66,12 +67,33 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+        // Only do this bit on the menu
         if (menu)
         {
             if (Input.anyKeyDown)
                 SceneManager.LoadScene("Game");
+
+            return;
         }
 
+        // Show the pause screen the first time the game is started
+        if (!IsFirstStartDone)
+        {
+            PauseGame();
+            return;
+        }
+
+        // Pausing and unpausing
+        if (Input.GetButtonDown("Pause"))
+            PauseGame();
+        else if (Input.GetButtonUp("Pause"))
+            UnpauseGame();
+
+        // Restart
+        if (Input.GetButtonUp("Restart") && IsPaused && IsFirstStartDone)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        // Enemy spawning
         if (existingEnemies != enemyAmmount)
         {
             enemyTimer -= Time.deltaTime;
@@ -81,30 +103,34 @@ public class GameController : MonoBehaviour
                 enemyTimer = 15;
             }
         }
+    }
 
-        if (menu)
-            return;
-
-        // Pausing
-        if (Input.GetButtonUp("Pause") && !IsPaused || !IsFirstStartDone && !IsPaused)
+    public void PauseGame()
+    {
+        if (!IsPaused)
         {
             IsPaused = true;
+            _canUnpause = false;
             if (OnPause != null)
                 OnPause();
         }
-        else if (Input.GetButtonUp("Pause") && IsPaused || Input.anyKey && !IsFirstStartDone)
-        {
-            IsPaused = false;
-            if (OnUnpause != null)
-                OnUnpause();
+    }
 
-            IsFirstStartDone = true;
+    public void UnpauseGame()
+    {
+        // Prevent unpausing if the game has just paused
+        if (!_canUnpause && IsFirstStartDone)
+        {
+            _canUnpause = true;
+            return;
         }
 
-        // Restart
-        if (Input.GetButtonUp("Restart") && IsPaused && IsFirstStartDone)
+        if (IsPaused)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            IsPaused = false;
+            IsFirstStartDone = true;
+            if (OnUnpause != null)
+                OnUnpause();
         }
     }
 

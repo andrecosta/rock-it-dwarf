@@ -68,6 +68,7 @@ public class PauseScreen : MonoBehaviour
     [Header("Visual")]
     public Text BlinkingText;
     public Image QuitFillBar;
+    public Image ContinueFillBar;
     public Image AnyKeyImage;
     public Sprite AnyKeyReleased;
     public Sprite AnyKeyPressed;
@@ -79,8 +80,8 @@ public class PauseScreen : MonoBehaviour
         _gc = GameController.Instance;
 
         // Bind events
-        _gc.OnPause += Pause;
-        _gc.OnUnpause += Unpause;
+        _gc.OnPause += ShowPauseScreen;
+        _gc.OnUnpause += HidePauseScreen;
 
         gameObject.SetActive(false);
     }
@@ -142,6 +143,35 @@ public class PauseScreen : MonoBehaviour
             else
                 RThumbImage.sprite = RThumbIdle;
 
+            if (!GameController.IsFirstStartDone)
+            {
+                // "Press any key to continue" text blink
+                FirstStart.GetComponentsInChildren<Text>().Last().color = Mathf.Sin(Time.unscaledTime * 20) > 0
+                    ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
+                    : new Color(180 / 255f, 147 / 255f, 122 / 255f);
+
+                // "Continue" fill bar
+                if (Input.anyKey)
+                {
+                    AnyKeyImage.sprite = AnyKeyPressed;
+                    ContinueFillBar.fillAmount += Time.unscaledDeltaTime/2;
+                    if (ContinueFillBar.fillAmount >= 1)
+                        _gc.UnpauseGame();
+                }
+                else
+                {
+                    AnyKeyImage.sprite = AnyKeyReleased;
+                    ContinueFillBar.fillAmount -= Time.unscaledDeltaTime;
+                }
+
+                return;
+            }
+
+            // "Continue" text blink
+            BlinkingText.color = Mathf.Sin(Time.unscaledTime * 20) > 0
+                ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
+                : new Color(180 / 255f, 147 / 255f, 122 / 255f);
+
             // "Quit" fill bar
             if (Input.GetButton("Pause"))
             {
@@ -156,29 +186,12 @@ public class PauseScreen : MonoBehaviour
             }
             else
                 QuitFillBar.fillAmount -= Time.unscaledDeltaTime;
-
-            // "Continue" text blink
-            BlinkingText.color = Mathf.Sin(Time.unscaledTime * 20) > 0
-                ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
-                : new Color(180 / 255f, 147 / 255f, 122 / 255f);
-
-            // "Press any key to continue" text blink
-            if (!GameController.IsFirstStartDone)
-            {
-                FirstStart.GetComponentsInChildren<Text>().Last().color = Mathf.Sin(Time.unscaledTime * 20) > 0
-                    ? new Color(219 / 255f, 211 / 255f, 205 / 255f)
-                    : new Color(180 / 255f, 147 / 255f, 122 / 255f);
-
-                AnyKeyImage.sprite = Mathf.Sin(Time.unscaledTime * 20) > 0
-                    ? AnyKeyReleased
-                    : AnyKeyPressed;
-            }
         }
     }
 
-    void Pause()
+    void ShowPauseScreen()
     {
-        print("Pause");
+        print("Paused");
         Time.timeScale = 0;
         QuitFillBar.fillAmount = 0;
 
@@ -200,9 +213,9 @@ public class PauseScreen : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    void Unpause()
+    void HidePauseScreen()
     {
-        print("Unpause");
+        print("Unpaused");
         Time.timeScale = 1;
         gameObject.SetActive(false);
     }
