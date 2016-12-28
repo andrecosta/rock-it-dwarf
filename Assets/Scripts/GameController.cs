@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class GameController : MonoBehaviour
@@ -64,6 +65,12 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+        if (menu)
+        {
+            if (Input.anyKeyDown)
+                SceneManager.LoadScene("Game");
+        }
+
         if (existingEnemies != enemyAmmount)
         {
             enemyTimer -= Time.deltaTime;
