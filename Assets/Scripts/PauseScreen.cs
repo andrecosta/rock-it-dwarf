@@ -45,7 +45,22 @@ public class PauseScreen : MonoBehaviour
     public Sprite RThumbDown;
     public Sprite RThumbLeft;
     public Sprite RThumbRight;
-    [Header("Actions")]
+    [Header("Controls (Actions)")]
+    public Image EscImage;
+    public Image EscImage2;
+    public Sprite EscReleased;
+    public Sprite EscPressed;
+    public Image StartImage;
+    public Image StartImage2;
+    public Sprite StartReleased;
+    public Sprite StartPressed;
+    public Image RImage;
+    public Sprite RReleased;
+    public Sprite RPressed;
+    public Image YImage;
+    public Sprite YReleased;
+    public Sprite YPressed;
+    [Header("Visual")]
     public Text ContinueText;
     public Image QuitFillBar;
 
@@ -81,6 +96,21 @@ public class PauseScreen : MonoBehaviour
             LeftImage.sprite = Input.GetKey(KeyCode.LeftArrow) ? LeftPressed : LeftReleased;
             DownImage.sprite = Input.GetKey(KeyCode.DownArrow) ? DownPressed : DownReleased;
             RightImage.sprite = Input.GetKey(KeyCode.RightArrow) ? RightPressed : RightReleased;
+
+            // Esc key
+            EscImage.sprite = Input.GetKey(KeyCode.Escape) ? EscPressed : EscReleased;
+            EscImage2.sprite = Input.GetKey(KeyCode.Escape) ? EscPressed : EscReleased;
+
+            // Start button
+            StartImage.sprite = Input.GetKey(KeyCode.JoystickButton7) ? StartPressed : StartReleased;
+            StartImage2.sprite = Input.GetKey(KeyCode.JoystickButton7) ? StartPressed : StartReleased;
+
+            // R key
+            RImage.sprite = Input.GetKey(KeyCode.R) ? RPressed : RReleased;
+
+            // Y button
+            YImage.sprite = Input.GetKey(KeyCode.JoystickButton3) ? YPressed : YReleased;
+
 
             // Left thumb image
             float h = Input.GetAxis("Horizontal");

@@ -81,6 +81,9 @@ public class GameController : MonoBehaviour
             }
         }
 
+        if (menu)
+            return;
+
         // Pausing
         if (Input.GetButtonUp("Pause") && !IsPaused)
         {
@@ -93,6 +96,12 @@ public class GameController : MonoBehaviour
             IsPaused = false;
             if (OnUnpause != null)
                 OnUnpause();
+        }
+
+        // Restart
+        if (IsPaused && Input.GetButtonUp("Restart"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
